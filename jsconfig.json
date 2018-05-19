@@ -1,7 +1,6 @@
 {
     "typeAcquisition": {
         "include": [
-            "express",
             "jquery",
             "three"
         ]
