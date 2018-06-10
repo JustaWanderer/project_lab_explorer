@@ -3,6 +3,9 @@
         "include": [
             "jquery",
             "three"
+        ],
+        "exclude": [
+            "node_modules"  
         ]
     }
 }
