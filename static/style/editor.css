@@ -1,0 +1,38 @@
+.editor-aside {
+    position: relative;
+    width: 20%;
+    float: left;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.editor-content {
+    position: relative;
+    width: 80%;
+    overflow: scroll;
+    height: 100%;
+}
+
+.div-aside-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 5px;
+    border: 2px #dddddd solid;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+#navigation-form span {
+    display: block;
+}
+
+label {
+    display: block;
+}
+
+input {
+    display: block;
+    position: relative;
+    width: 97.5%;
+}

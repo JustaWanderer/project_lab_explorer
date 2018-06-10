@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Project Editor</title>
+    <link rel="stylesheet" href="./style/main.css">
+    <link rel="stylesheet" href="./style/editor.css">
+    <script src="./js/lib/jquery.js"></script>
+    <script src="./js/Field.js"></script>
+    <script src="./js/Level.js"></script>
+    <script src="./js/editor.js"></script>
+</head>
+
+<body>
+    <div class="editor-aside">
+        <div id="generator-form" class="div-aside-block">
+            <label for="input-name">Name:
+                <input type="text" name="input-name" id="input-name">
+            </label>
+            <label for="input-width">Width:
+                <input type="number" name="input-width" id="input-width">
+            </label>
+            <label for="input-length">Length:
+                <input type="number" name="input-length" id="input-length">
+            </label>
+            <button id="button-generate">GENERATE</button>
+        </div>
+        <div class="div-aside-block" id="save-form">
+            <label for="input-username">Username:
+                <input type="text" name="input-name" id="input-username">
+            </label>
+            <label for="input-password">Password:
+                <input type="password" name="input-width" id="input-password">
+            </label>
+            <button id="button-save">SAVE</button>
+        </div>
+        <div class="div-aside-block" id="navigation-form">
+            <span id="span-name">Name: </span>
+            <span id="span-num">Number of players: </span>
+            <span id="span-dimensions">Dimensions: </span>
+            <button id="button-regenerate">RE-GENERATE</button>
+        </div>
+        <div class="div-aside-block" id="import-form">
+            <textarea name="textarea-import" id="textarea-import" cols="30" rows="2"></textarea>
+            <button id="button-import">IMPORT</button>
+        </div>
+        <div class="div-aside-block" id="export-form">
+            <button id="button-export">EXPORT</button>
+        </div>
+        <div class="div-aside-block" id="field-types-form">
+        </div>
+        <div class="div-aside-block" id="door-types-form">
+            </div>
+    </div>
+    <div class="editor-content"></div>
+</body>
+
+</html>
