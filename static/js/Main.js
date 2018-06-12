@@ -44,7 +44,7 @@ $(document).ready(() => {
         if (intersects.length > 0) {
             let x = intersects[0].object.position.x;
             let z = intersects[0].object.position.z;
-            player.movePlayer(x/100, z/100);
+            player.checkForMove(x/100, z/100);
         }
     });
 
@@ -54,6 +54,7 @@ $(document).ready(() => {
     * @since 1.0.0
     */
     function render() {
+        player.playerMove();
         requestAnimationFrame(render);
         renderer.render(scene, camera);
     }
