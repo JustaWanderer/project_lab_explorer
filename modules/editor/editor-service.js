@@ -42,7 +42,7 @@ const getDoorTypes = () => {
         {
             code: 2,
             name: 'locked-door',
-            // openable by key in treasude field or lever etc.
+            // openable by key in treasure field or lever etc.
             bind: 2,
         },
         {
