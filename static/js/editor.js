@@ -96,7 +96,11 @@ $(document).on('DOMContentLoaded', (event) => {
     const setDoor = (x, z, dir, type) => {
         $('#' + dir + '-field-' + x + '-' + z)
             .css('background-color', doorColors[type.code]);
-        level.getField(x, z).setDoor(dir, type.code);
+        if (type.code !== 2) {
+            level.getField(x, z).setDoor(dir, {code: type.code});
+        } else {
+            level.getField(x, z).setDoor(dir, {code: type.code, id: window.prompt('Switch id:')});
+        }
         console.log(level.getField(x, z));
     };
 
