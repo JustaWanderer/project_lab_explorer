@@ -22,7 +22,7 @@ class Field {
     /**
      * Set the content of a door
      * @param {string} direction Direction of the door (N, S, E, W)
-     * @param {object} data data to be set
+     * @param {number} data data to be set
      */
     setDoor(direction, data) {
         direction = direction.toLocaleUpperCase();

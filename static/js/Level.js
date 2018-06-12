@@ -33,15 +33,36 @@ class Level {
          * @return {Field}
          */
         this.getField = (x, z) => {
+            console.log(x + ', ' + z);
+            let res;
             this.board.forEach((field) => {
+                console.log(field.x + ', ' + field.z);
+                if (
+                    field.x == x &&
+                    field.z == z
+                ) {
+                    res = field;
+                }
+            });
+            return res;
+        };
+
+        /**
+         * Deletes a field based on x and z parameters
+         * @method
+         * @since 1.0.0
+         * @param {Number} x x parameter of the field
+         * @param {Number} z z parameter of the field
+         */
+        this.deleteField = (x, z) => {
+            this.board.forEach((field, i) => {
                 if (
                     parseInt(field.x) == parseInt(x) &&
                     parseInt(field.z) == parseInt(z)
                 ) {
-                    return field;
+                    this.board.splice(i, 1);
                 }
             });
-            return undefined;
         };
     }
 }

@@ -9,15 +9,32 @@ $(document).on('DOMContentLoaded', (event) => {
         'green',
         'green',
         'orange',
+        'aqua',
+        'blue',
+        'pink',
+        'purple',
+    ];
+
+    const doorColors = [
+        'dimgrey',
+        'lightgrey',
+        'darkred',
     ];
 
     let keys = [];
+    let switches = [];
     let level = new Level(1, 1, '', 1);
     let content = $('.editor-content');
     let selected = null;
     let fieldSelected = false;
     let doorSelected = false;
 
+    /**
+     * Sets a field on the diagram and in level
+     * @param {number} x x position
+     * @param {number} z z position
+     * @param {object} type field object imported from server
+     */
     const setField = (x, z, type) => {
         let f = new Field(x, z, type.code);
         $('#field-' + x + '-' + z)
@@ -42,13 +59,44 @@ $(document).on('DOMContentLoaded', (event) => {
                 type: 'key',
                 id: keys.length, // how much health takes away
             };
-            pre.text('key ' + key.id);
+            pre.text('key\n' + key.id);
             f.content = key;
             keys.push(key);
         }
+        if (type.code === 3 || type.code === 4 || type.code === 5) {
+            let sw = {
+                id: switches.length, // how much health takes away
+            };
+            pre.text(type.name + '\n' + sw.id);
+            f.content = sw;
+            switches.push(sw);
+        }
+        if (type.code === 6) {
+            f.content = {
+                type: 'fireplace',
+                strength: 1, // how much health takes away
+            };
+        }
         // if (type.code === 3)
         level.board.push(f);
+        console.log(level.board);
     };
+
+    /**
+     * Sets a door on diagram and in level.
+     * @param {number} x x parameter
+     * @param {number} z y parameter
+     * @param {string} dir direction (n, w, s, e)
+     * @param {object} type door object imported from server
+     * @param {Boolean} [reflect] whether to automatically set doors on the other side (default true)
+     */
+    const setDoor = (x, z, dir, type) => {
+        $('#' + dir + '-field-' + x + '-' + z)
+            .css('background-color', doorColors[type.code]);
+        level.getField(x, z).setDoor(dir, type.code);
+        console.log(level.getField(x, z));
+    };
+
     /**
      * @param {Level} lv
      */
@@ -61,6 +109,7 @@ $(document).on('DOMContentLoaded', (event) => {
                 };
                 let nBlock = $('<div>')
                     .css('position', 'absolute')
+                    .css('background-color', 'white')
                     .css('top', 0 + 'px')
                     .css('left', 24 + 'px')
                     .css('border', '1px solid black')
@@ -72,10 +121,13 @@ $(document).on('DOMContentLoaded', (event) => {
                         z)
                     .on('click', (e) => {
                         // let target = $(e.target);
-                        console.log('N');
+                        if (selected !== null && doorSelected) {
+                            setDoor(x, z, 'n', selected);
+                        }
                     });
                 let sBlock = $('<div>')
                     .css('position', 'absolute')
+                    .css('background-color', 'white')
                     .css('bottom', 0 + 'px')
                     .css('left', 24 + 'px')
                     .css('border', '1px solid black')
@@ -87,10 +139,13 @@ $(document).on('DOMContentLoaded', (event) => {
                         z)
                     .on('click', (e) => {
                         // let target = $(e.target);
-                        console.log('S');
+                        if (selected !== null && doorSelected) {
+                            setDoor(x, z, 's', selected);
+                        }
                     });
                 let eBlock = $('<div>')
                     .css('position', 'absolute')
+                    .css('background-color', 'white')
                     .css('top', 24 + 'px')
                     .css('right', 0 + 'px')
                     .css('border', '1px solid black')
@@ -102,10 +157,13 @@ $(document).on('DOMContentLoaded', (event) => {
                         z)
                     .on('click', (e) => {
                         // let target = $(e.target);
-                        console.log('E');
+                        if (selected !== null && doorSelected) {
+                            setDoor(x, z, 'e', selected);
+                        }
                     });
                 let wBlock = $('<div>')
                     .css('position', 'absolute')
+                    .css('background-color', 'white')
                     .css('top', 24 + 'px')
                     .css('left', 0 + 'px')
                     .css('border', '1px solid black')
@@ -117,9 +175,11 @@ $(document).on('DOMContentLoaded', (event) => {
                         z)
                     .on('click', (e) => {
                         // let target = $(e.target);
-                        console.log('W');
+                        if (selected !== null && doorSelected) {
+                            setDoor(x, z, 'w', selected);
+                        }
                     });
-                let div = $('<div>')
+                $('<div>')
                     .addClass('div-field')
                     .css('top', z * 150 + 'px')
                     .css('left', x * 150 + 'px')
@@ -206,11 +266,12 @@ $(document).on('DOMContentLoaded', (event) => {
             let b = $('<button>')
                 .text(fieldType.name)
                 .css('display', 'block')
+                .css('background-color', fieldColors[fieldType.code])
                 .on('click', () => {
                     if (!fieldSelected || selected.code !== fieldType.code) {
-                        console.log('selected: ' + fieldType.code);
                         selected = fieldType;
                         fieldSelected = true;
+                        doorSelected = false;
                         $('#field-types-form')
                             .children()
                             .css('font-weight', 'initial');
@@ -234,11 +295,12 @@ $(document).on('DOMContentLoaded', (event) => {
             let b = $('<button>')
                 .text(fieldType.name)
                 .css('display', 'block')
+                .css('background-color', doorColors[v.code])
                 .on('click', () => {
                     if (!doorSelected || selected.code !== fieldType.code) {
-                        console.log('selected: ' + fieldType.code);
                         selected = fieldType;
-                        fieldSelected = true;
+                        doorSelected = true;
+                        fieldSelected = false;
                         $('#door-types-form')
                             .children()
                             .css('font-weight', 'initial');
@@ -248,7 +310,7 @@ $(document).on('DOMContentLoaded', (event) => {
                         b.css('font-weight', 'bold');
                     } else {
                         selected = null;
-                        fieldSelected = false;
+                        doorSelected = false;
                         b.css('font-weight', 'initial');
                     }
                 })
