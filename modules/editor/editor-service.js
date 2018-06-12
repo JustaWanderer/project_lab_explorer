@@ -31,28 +31,28 @@ const getDoorTypes = () => {
     // bind specifies what type of door must be on the other side
     return [{
             code: 0,
-            type: 'wall',
+            name: 'wall',
             bind: 0,
         },
         {
             code: 1,
-            type: 'open-door',
+            name: 'open-door',
             bind: 1,
         },
         {
             code: 2,
-            type: 'locked-door',
+            name: 'locked-door',
             // openable by key in treasude field or lever etc.
             bind: 2,
         },
         {
             code: 3,
-            type: 'one-way-in',
+            name: 'one-way-in',
             bind: 4,
         },
         {
             code: 4,
-            type: 'one-way-out',
+            name: 'one-way-out',
             bind: 3,
         },
     ];
