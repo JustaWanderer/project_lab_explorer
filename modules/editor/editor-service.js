@@ -9,7 +9,7 @@ const getFieldTypes = () => {
         },
         {
             code: 2,
-            name: 'treasure',
+            name: 'treasure', // for now, only keys
         },
         {
             code: 3,
@@ -28,6 +28,22 @@ const getFieldTypes = () => {
             code: 6,
             name: 'fireplace',
             // fires event when entering and another while leaving
+        },
+        {
+            code: 7,
+            name: 'p1-start',
+        },
+        {
+            code: 8,
+            name: 'p2-start',
+        },
+        {
+            code: 9,
+            name: 'p1-finish',
+        },
+        {
+            code: 10,
+            name: 'p2-finish',
         },
     ];
 };
