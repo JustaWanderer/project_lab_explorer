@@ -17,11 +17,6 @@ class Level {
         this.name = name;
         this.numOfPlayers = numOfPlayers;
         this.board = [];
-        for (let i = 0; i < length; i++) {
-            for (let j = 0; j < width; j++) {
-                this.board.push(new Field(j, i, 0));
-            }
-        }
         /**
          * Returns JSON code based on the level
          * @method

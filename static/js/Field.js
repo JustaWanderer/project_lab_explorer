@@ -19,4 +19,17 @@ class Field {
         this.doorW = null;
         this.content = null;
     }
+    /**
+     * Set the content of a door
+     * @param {string} direction Direction of the door (N, S, E, W)
+     * @param {object} data data to be set
+     */
+    setDoor(direction, data) {
+        direction = direction.toLocaleUpperCase();
+        if (/[NWSE]/g.test(direction) && direction.length === 1) {
+            this['door' + direction] = data;
+        } else {
+            console.error('Wrong direction (only N, W, S, E)');
+        }
+    }
 }

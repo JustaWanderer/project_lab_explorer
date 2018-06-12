@@ -24,6 +24,11 @@ const getFieldTypes = () => {
             name: 'pressure-plate',
             // fires event when entering and another while leaving
         },
+        {
+            code: 6,
+            name: 'fireplace',
+            // fires event when entering and another while leaving
+        },
     ];
 };
 
