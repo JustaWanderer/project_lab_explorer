@@ -12,15 +12,15 @@ const getFieldTypes = () => {
             name: 'treasure',
         },
         {
-            code: 2,
+            code: 3,
             name: 'lever', // able to switch ON and OFF
         },
         {
-            code: 3,
+            code: 4,
             name: 'button', // fires an event, no switching
         },
         {
-            code: 2,
+            code: 5,
             name: 'pressure-plate',
             // fires event when entering and another while leaving
         },
