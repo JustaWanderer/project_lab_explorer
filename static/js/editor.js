@@ -77,6 +77,9 @@ $(document).on('DOMContentLoaded', (event) => {
                 strength: 1, // how much health takes away
             };
         }
+        if (type.code === 8) {
+            level.numOfPlayers++;
+        }
         // if (type.code === 3)
         level.board.push(f);
         console.log(level.board);
