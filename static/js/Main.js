@@ -14,8 +14,14 @@ $(document).ready(() => {
     $('#root').append(renderer.domElement);
     // end three.js setup
 
-    camera.position.y = 200;
+    scene.add(camera);
+    camera.position.y = 2000;
     camera.lookAt(scene.position);
+
+    let orbitControl = new THREE.OrbitControls(camera, renderer.domElement);
+    orbitControl.addEventListener('change', () => {
+        renderer.render(scene, camera);
+    });
 
     // test data
     let json = JSON.parse('{"width":5,"length":5,"name":"test","numOfPlayers":1,"board":[{"x":0,"z":2,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":1,"z":3,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":2,"z":3,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":3,"z":3,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":4,"z":2,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":3,"z":0,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":1,"z":0,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":1,"z":2,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":2,"z":2,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":3,"z":2,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null}]}');

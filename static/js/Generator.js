@@ -19,15 +19,19 @@ class Generator {
         this.generateLevel = (data) => {
             for (let i = 0; i < data.board.length; i++) {
                 let geometry = new THREE.PlaneGeometry(100, 100);
-                let material = new THREE.Material({
+                let material = new THREE.MeshBasicMaterial({
                     color: 0x0f0f0f,
+                    side: THREE.DoubleSide,
+                    wireframe: false,
                 });
 
                 let tile = new THREE.Mesh(geometry, material);
                 // positioning tile by given data
                 tile.position.x = data.board[i].x * 100;
                 tile.position.z = data.board[i].z * 100;
+                tile.rotateX(Math.PI/2);
 
+                console.log(tile);
                 this.container.add(tile);
             }
         };
