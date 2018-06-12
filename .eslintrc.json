@@ -5,7 +5,9 @@
     },
     "rules": {
         "linebreak-style":"off",
-        "no-unused-vars":"warn"
+        "no-unused-vars":"warn",
+        "max-len":"off",
+        "max-lines":"off"
     }
     
 }
