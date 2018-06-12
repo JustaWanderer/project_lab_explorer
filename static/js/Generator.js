@@ -29,9 +29,9 @@ class Generator {
                 // positioning tile by given data
                 tile.position.x = data.board[i].x * 100;
                 tile.position.z = data.board[i].z * 100;
+                tile.position.y = -30;
                 tile.rotateX(Math.PI/2);
 
-                console.log(tile);
                 this.container.add(tile);
             }
         };
