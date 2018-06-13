@@ -21,8 +21,28 @@ const addUser = (req, res) => {
         }, console.error);
 };
 
+const getLevels = (req, res) => {
+    const query = req.query.query ? req.query.query : {};
+    service.getLevels(query)
+        .then((result) => {
+            res.json(result);
+        }, console.error);
+};
+
+const createLevel = (req, res) => {
+    const login = req.body.login;
+    const password = req.body.password;
+    const levelData = req.body.levelData;
+    service.createLevel(login, password, levelData)
+        .then(() => {
+            res.send('ok');
+        }, console.error);
+};
+
 module.exports = {
     getMenuPage: getMenuPage,
     getUsers: getUsers,
     addUser: addUser,
+    getLevels: getLevels,
+    createLevel: createLevel,
 };

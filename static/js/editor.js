@@ -325,4 +325,12 @@ $(document).on('DOMContentLoaded', (event) => {
                 .appendTo($('#door-types-form'));
         });
     });
+
+    $('#button-save').on('click', () => {
+        h.ajax('/createLevel', 'POST', {
+            login: $('#input-login').val(),
+            password: $('#input-password').val(),
+            levelData: JSON.stringify(level),
+        }).then(console.log, console.error);
+    });
 });

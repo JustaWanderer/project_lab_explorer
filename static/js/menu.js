@@ -3,11 +3,23 @@ $(document).ready(() => {
         h.ajax('/addUser', 'POST', {
             login: $('#login').val(),
             password: $('#password').val(),
-        }).then((data) => {
-            console.log(data);
-            h.ajax('/getUsers').then((data) => {
-                console.log(data);
-            }, console.error);
-        }, console.error);
+        }).then(console.log, console.error);
     });
+
+    h.ajax('/getLevels').then((data) => {
+        data.forEach((level) => {
+            $('<p>')
+                .html('<h2>' + JSON.parse(level.jsonData).name + '</h2>Author: ' + level.author)
+                .on('click', () => {
+                    let url = window.location.href;
+                    if (url.endsWith('/')) {
+                        url = url.substr(0, url.length - 1);
+                    }
+                    url += '/game?id=' + level._id;
+                    console.log(url);
+                    window.location = url;
+                })
+                .appendTo($('#levels-form'));
+        });
+    }, console.error);
 });

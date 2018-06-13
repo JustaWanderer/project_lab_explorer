@@ -17,6 +17,16 @@ const loadTextures = () => new Promise((resolve, reject) => {
         .then(resolve);
 });
 
+const getParameterByName = (name) => {
+    let url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+    let results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+};
+
 $(document).ready(() => {
     // three.js setup
     loadResources().then(() => {
@@ -44,41 +54,48 @@ $(document).ready(() => {
         });
 
         // test data
-        let json = JSON.parse('{"width":5,"length":5,"name":"test2","numOfPlayers":1,"board":[{"x":0,"z":4,"type":7,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":1,"z":4,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":2,"z":4,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":3,"z":4,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":4,"z":4,"type":1,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":{"type":"enemy","strength":1}},{"x":4,"z":3,"type":2,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":{"type":"key","id":0}},{"x":4,"z":2,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":3,"z":2,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":2,"z":2,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":1,"z":2,"type":3,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":{"id":0}},{"x":0,"z":2,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":0,"z":1,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":0,"z":0,"type":3,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":{"id":1}},{"x":1,"z":0,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":2,"z":0,"type":6,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":{"type":"fireplace","strength":1}},{"x":3,"z":0,"type":1,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":{"type":"enemy","strength":1}},{"x":4,"z":0,"type":9,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null}]}');
-        let generator = new Generator();
-        generator.generateLevel(json); // create level from data
-        scene.add(generator.container); // add level to scene
-
-        let player = new Player();
-        scene.add(player.container);
-
-
-        let raycaster = new THREE.Raycaster();
-        let mouseVector = new THREE.Vector2();
-        $(document).mousedown((event) => {
-            mouseVector.x = (event.clientX / $(window).width()) * 2 - 1;
-            mouseVector.y = -(event.clientY / $(window).height()) * 2 + 1;
-
-            raycaster.setFromCamera(mouseVector, camera);
-            let intersects = raycaster.intersectObjects(generator.container.children);
-            if (intersects.length > 0) {
-                let x = intersects[0].object.position.x;
-                let z = intersects[0].object.position.z;
-                player.checkForMove(x / 100, z / 100);
+        h.ajax('/getLevels', 'GET', {
+            _id: getParameterByName('id'),
+        }).then((data) => {
+            let json = JSON.parse(data[0].jsonData);
+            if (!data) {
+                json = JSON.parse('{"width":5,"length":5,"name":"test2","numOfPlayers":1,"board":[{"x":0,"z":4,"type":7,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":1,"z":4,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":2,"z":4,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":3,"z":4,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":4,"z":4,"type":1,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":{"type":"enemy","strength":1}},{"x":4,"z":3,"type":2,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":{"type":"key","id":0}},{"x":4,"z":2,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":3,"z":2,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":2,"z":2,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":1,"z":2,"type":3,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":{"id":0}},{"x":0,"z":2,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":0,"z":1,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":0,"z":0,"type":3,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":{"id":1}},{"x":1,"z":0,"type":0,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null},{"x":2,"z":0,"type":6,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":{"type":"fireplace","strength":1}},{"x":3,"z":0,"type":1,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":{"type":"enemy","strength":1}},{"x":4,"z":0,"type":9,"doorN":null,"doorE":null,"doorS":null,"doorW":null,"content":null}]}');
             }
-        });
 
-        /**
-         * Main rendering loop
-         * @method
-         * @since 1.0.0
-         */
-        function render() {
-            player.playerMove();
-            requestAnimationFrame(render);
-            renderer.render(scene, camera);
-        }
+            let generator = new Generator();
+            generator.generateLevel(json); // create level from data
+            scene.add(generator.container); // add level to scene
 
-        render(); // let's get this party started
+            let player = new Player();
+            scene.add(player.container);
+
+            let raycaster = new THREE.Raycaster();
+            let mouseVector = new THREE.Vector2();
+            $(document).mousedown((event) => {
+                mouseVector.x = (event.clientX / $(window).width()) * 2 - 1;
+                mouseVector.y = -(event.clientY / $(window).height()) * 2 + 1;
+
+                raycaster.setFromCamera(mouseVector, camera);
+                let intersects = raycaster.intersectObjects(generator.container.children);
+                if (intersects.length > 0) {
+                    let x = intersects[0].object.position.x;
+                    let z = intersects[0].object.position.z;
+                    player.checkForMove(x / 100, z / 100);
+                }
+            });
+
+            /**
+             * Main rendering loop
+             * @method
+             * @since 1.0.0
+             */
+            function render() {
+                player.playerMove();
+                requestAnimationFrame(render);
+                renderer.render(scene, camera);
+            }
+
+            render(); // let's get this party started
+        }, console.error);
     }, console.error);
 });
