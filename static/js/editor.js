@@ -19,10 +19,11 @@ $(document).on('DOMContentLoaded', (event) => {
         'dimgrey',
         'lightgrey',
         'darkred',
+        'beige',
+        'bisque',
     ];
 
     let keys = [];
-    let switches = [];
     let level = new Level(1, 1, '', 1);
     let content = $('.editor-content');
     let selected = null;
@@ -65,11 +66,11 @@ $(document).on('DOMContentLoaded', (event) => {
         }
         if (type.code === 3 || type.code === 4 || type.code === 5) {
             let sw = {
-                id: switches.length, // how much health takes away
+                id: keys.length, // how much health takes away
             };
             pre.text(type.name + '\n' + sw.id);
             f.content = sw;
-            switches.push(sw);
+            keys.push(sw);
         }
         if (type.code === 6) {
             f.content = {
