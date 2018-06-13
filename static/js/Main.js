@@ -1,3 +1,5 @@
+let mixers = [];
+
 const loadResources = () => new Promise((resolve, reject) => {
     loadModels().then(resolve);
 });
@@ -8,6 +10,8 @@ const loadModels = () => new Promise((resolve, reject) => {
 
     loader.loadFBX('resources/models/Player.fbx')
         .then((object) => {
+            object.mixer = new THREE.AnimationMixer(object);
+            mixers.push(object.mixer);
             Settings.playerModel = object;
         }, console.error)
         .then(resolve);
@@ -47,6 +51,7 @@ $(document).ready(() => {
 
         let player = new Player();
         scene.add(player.container);
+        player.playAnimation('Armature|Idle');
 
         // test light (to change)
         let directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
@@ -73,6 +78,12 @@ $(document).ready(() => {
         * @since 1.0.0
         */
         function render() {
+            if (mixers.length > 0) {
+                for (let i = 0; i < mixers.length; i++) {
+                    mixers[i].update(clock.getDelta());
+                }
+            }
+
             player.playerMove();
             requestAnimationFrame(render);
             renderer.render(scene, camera);

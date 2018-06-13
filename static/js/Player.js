@@ -46,8 +46,24 @@ class Player {
                 this.dx = x;
                 this.dz = z;
                 // setting flag to true, to make x and z change once player reaches destination
-                this.setxPosFlag = true;
-                this.setzPosFlag = true;
+                if (x != this.x) {
+                    this.setxPosFlag = true;
+                } else if (z != this.z) {
+                    this.setzPosFlag = true;
+                }
+                // play walking animation
+                this.stopAnimation();
+                this.playAnimation('Armature|Walk');
+            }
+
+            if (this.dx - this.x == 1) {
+                model.rotation.y = Math.PI/2;
+            } else if (this.dx - this.x == -1) {
+                model.rotation.y = -Math.PI/2;
+            } else if (this.dz - this.z == 1) {
+                model.rotation.y = 0;
+            } else if (this.dz - this.z == -1) {
+                model.rotation.y = Math.PI;
             }
         };
 
@@ -67,6 +83,9 @@ class Player {
                 // once player reached destination set x and z to dx and dz
                 this.setxPosFlag = false;
                 // set flags to false to prevent further changing
+                this.stopAnimation();
+                this.playAnimation('Armature|Idle');
+                // stop walking animation, play idle animation
             }
 
             if (this.container.position.z < this.dz*100) {
@@ -76,7 +95,28 @@ class Player {
             } else if (this.setzPosFlag) {
                 this.z = this.dz;
                 this.setzPosFlag = false;
+                this.stopAnimation();
+                this.playAnimation('Armature|Idle');
             }
+        };
+
+        /**
+         * Plays animation embeded in model
+         * @method
+         * @since 1.0.0
+         * @param {String} name name of animation to play
+         */
+        this.playAnimation = (name) => {
+            model.mixer.clipAction(name).play();
+        };
+
+        /**
+         * Stops all animations
+         * @method
+         * @since 1.0.0
+         */
+        this.stopAnimation = () => {
+            model.mixer.uncacheRoot(model);
         };
     }
 }
