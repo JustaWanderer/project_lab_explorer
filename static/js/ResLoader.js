@@ -42,7 +42,7 @@ class ResLoader {
     /**
      * Loads a FBX Model from a file
      * @param {string} path relative path to the resource
-     * @return {Promise<THREE.Geometry | ErrorEvent>}
+     * @return {Promise<THREE.Mesh | ErrorEvent>}
      * @since 1.0.0
      * @method
      */

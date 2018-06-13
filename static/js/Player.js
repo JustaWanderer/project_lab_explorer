@@ -28,6 +28,9 @@ class Player {
         });
         let mesh = new THREE.Mesh(geometry, material);
         this.container.add(mesh);
+        let light = new THREE.PointLight(0xffffff, 1, 300, 1);
+        light.position.y = 70;
+        this.container.add(light);
 
         /**
          * Checks if player can move to clicked field
