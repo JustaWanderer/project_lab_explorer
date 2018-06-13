@@ -6,31 +6,34 @@ class Player {
     /**
      * Creates new player.
      * @since 1.0.0
+     * @param {Number} number number of player (1 or 2)
      * @param {Number} x staring x position (default 0)
      * @param {Number} z staring z position (default 0)
      */
-    constructor(x = 0, z = 0) {
+    constructor(number, x = 0, z = 0) {
         // container with player model
         this.container = new THREE.Object3D();
-        this.x = 0;
-        this.z = 0;
-        this.dx = 0; // destination x, used for moving player
-        this.dz = 0; // destination z
+        this.x = x;
+        this.z = z;
+        this.dx = x; // destination x, used for moving player
+        this.dz = z; // destination z
         // flags used to set x and z only once in playerMove()
         this.setxPosFlag = false;
         this.setzPosFlag = false;
+        // player model
+        this.model;
 
-        let geometry = new THREE.CylinderGeometry(20, 20, 60, 20);
-        let material = new THREE.MeshBasicMaterial({
-            color: 0x00ff00,
-            side: THREE.DoubleSide,
-            wireframe: false,
-        });
-        let mesh = new THREE.Mesh(geometry, material);
-        // this.container.add(mesh);
+        // adding model depending on player number
+        if (number == 1) {
+            this.model = Settings.player1Model;
+        } else if (number == 2) {
+            this.model = Settings.player2Model;
+        }
+        this.container.add(this.model);
 
-        let model = Settings.playerModel;
-        this.container.add(model);
+        // set player starting position
+        this.container.position.x = x*100;
+        this.container.position.z = z*100;
 
         /**
          * Checks if player can move to clicked field
@@ -57,13 +60,13 @@ class Player {
             }
 
             if (this.dx - this.x == 1) {
-                model.rotation.y = Math.PI/2;
+                this.model.rotation.y = Math.PI/2;
             } else if (this.dx - this.x == -1) {
-                model.rotation.y = -Math.PI/2;
+                this.model.rotation.y = -Math.PI/2;
             } else if (this.dz - this.z == 1) {
-                model.rotation.y = 0;
+                this.model.rotation.y = 0;
             } else if (this.dz - this.z == -1) {
-                model.rotation.y = Math.PI;
+                this.model.rotation.y = Math.PI;
             }
         };
 
@@ -107,7 +110,7 @@ class Player {
          * @param {String} name name of animation to play
          */
         this.playAnimation = (name) => {
-            model.mixer.clipAction(name).play();
+            this.model.mixer.clipAction(name).play();
         };
 
         /**
@@ -116,7 +119,7 @@ class Player {
          * @since 1.0.0
          */
         this.stopAnimation = () => {
-            model.mixer.uncacheRoot(model);
+            this.model.mixer.uncacheRoot(this.model);
         };
     }
 }

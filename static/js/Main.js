@@ -5,16 +5,24 @@ const loadResources = () => new Promise((resolve, reject) => {
 });
 
 const loadModels = () => new Promise((resolve, reject) => {
-    $(document).trigger('loading-textures-begin');
+    $(document).trigger('loading-models-begin');
     const loader = new ResLoader();
 
-    loader.loadFBX('resources/models/Player.fbx')
+    loader.loadFBX('resources/models/Player1.fbx')
         .then((object) => {
             object.mixer = new THREE.AnimationMixer(object);
             mixers.push(object.mixer);
-            Settings.playerModel = object;
+            Settings.player1Model = object;
         }, console.error)
-        .then(resolve);
+        .then(() => {
+            loader.loadFBX('resources/models/Player2.fbx')
+            .then((object) => {
+                object.mixer = new THREE.AnimationMixer(object);
+                mixers.push(object.mixer);
+                Settings.player2Model = object;
+            }, console.error)
+            .then(resolve);
+        });
 });
 
 $(document).ready(() => {
@@ -49,13 +57,17 @@ $(document).ready(() => {
         generator.generateLevel(json); // create level from data
         scene.add(generator.container); // add level to scene
 
-        let player = new Player();
-        scene.add(player.container);
-        player.playAnimation('Armature|Idle');
+        let player1 = new Player(1);
+        scene.add(player1.container);
+        player1.playAnimation('Armature|Idle');
+
+        let player2 = new Player(2, 2, 2);
+        scene.add(player2.container);
+        player2.playAnimation('Armature|Idle');
 
         // test light (to change)
-        let directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
-        scene.add( directionalLight );
+        let directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        scene.add(directionalLight);
 
         let raycaster = new THREE.Raycaster();
         let mouseVector = new THREE.Vector2();
@@ -68,7 +80,8 @@ $(document).ready(() => {
             if (intersects.length > 0) {
                 let x = intersects[0].object.position.x;
                 let z = intersects[0].object.position.z;
-                player.checkForMove(x/100, z/100);
+                player1.checkForMove(x/100, z/100);
+                player2.checkForMove(x/100, z/100);
             }
         });
 
@@ -84,7 +97,8 @@ $(document).ready(() => {
                 }
             }
 
-            player.playerMove();
+            player1.playerMove();
+            player2.playerMove();
             requestAnimationFrame(render);
             renderer.render(scene, camera);
         }
