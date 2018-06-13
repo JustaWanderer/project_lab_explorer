@@ -6,15 +6,50 @@ const loadTextures = () => new Promise((resolve, reject) => {
     $(document).trigger('loading-textures-begin');
     const loader = new ResLoader();
 
-    loader.loadTexture('./resources/textures/floor.png')
+    loader.loadTexture('./resources/textures/wall.png')
         .then((texture) => {
-            Settings.floorMap = texture;
-        }, console.error);
-    loader.loadTexture('./resources/textures/floor-bump.png')
-        .then((texture) => {
-            Settings.floorBumpMap = texture;
-        }, console.error)
-        .then(resolve);
+            Settings.wallMap = texture;
+        }, console.error).then(() => {
+            loader.loadTexture('./resources/textures/wall-bump.png')
+                .then((texture) => {
+                    Settings.wallBumpMap = texture;
+                }, console.error).then(() => {
+                    loader.loadTexture('./resources/textures/floor.png')
+                        .then((texture) => {
+                            Settings.floorMap = texture;
+                        }, console.error).then(() => {
+                            loader.loadTexture('./resources/textures/floor-bump.png')
+                                .then((texture) => {
+                                    Settings.floorBumpMap = texture;
+                                }, console.error)
+                                .then(() => {
+                                    loader.loadTexture('./resources/textures/unlocked-door.png')
+                                        .then((texture) => {
+                                            Settings.unlockedDoorMap = texture;
+                                        }, console.error)
+                                        .then(() => {
+                                            loader.loadTexture('./resources/textures/unlocked-door-bump.png')
+                                                .then((texture) => {
+                                                    Settings.unlockedDoorBumpMap = texture;
+                                                }, console.error)
+                                                .then(() => {
+                                                    loader.loadTexture('./resources/textures/locked-door.png')
+                                                        .then((texture) => {
+                                                            Settings.lockedDoorMap = texture;
+                                                        }, console.error)
+                                                        .then(() => {
+                                                            loader.loadTexture('./resources/textures/locked-door-bump.png')
+                                                                .then((texture) => {
+                                                                    Settings.lockedDoorBumpMap = texture;
+                                                                }, console.error)
+                                                                .then(resolve);
+                                                        });
+                                                });
+                                        });
+                                });
+                        });
+                });
+        });
 });
 
 const getParameterByName = (name) => {
@@ -34,13 +69,15 @@ $(document).ready(() => {
         let scene = new THREE.Scene();
         let camera = new THREE.PerspectiveCamera(
             45,
-            16 / 9,
+            $(window).width() / $(window).height(),
             0.1,
             10000
         );
         let renderer = new THREE.WebGLRenderer();
-        renderer.setClearColor(0xffffff);
+        renderer.setClearColor(0x000000);
         renderer.setSize($(window).width(), $(window).height());
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         $('#root').append(renderer.domElement);
         // end three.js setup
 
@@ -77,7 +114,7 @@ $(document).ready(() => {
 
                 raycaster.setFromCamera(mouseVector, camera);
                 let intersects = raycaster.intersectObjects(generator.container.children);
-                if (intersects.length > 0) {
+                if (intersects.length > 0 && intersects[0].object.name.startsWith('tile')) {
                     let x = intersects[0].object.position.x;
                     let z = intersects[0].object.position.z;
                     player.checkForMove(x / 100, z / 100);

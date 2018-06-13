@@ -22,7 +22,7 @@ const addUser = (req, res) => {
 };
 
 const getLevels = (req, res) => {
-    const query = req.query.query ? req.query.query : {};
+    const query = req.query ? req.query : {};
     service.getLevels(query)
         .then((result) => {
             res.json(result);

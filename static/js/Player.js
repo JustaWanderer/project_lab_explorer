@@ -28,8 +28,11 @@ class Player {
         });
         let mesh = new THREE.Mesh(geometry, material);
         this.container.add(mesh);
-        let light = new THREE.PointLight(0xffffff, 1, 300, 1);
-        light.position.y = 70;
+        let light = new THREE.PointLight(0xffffff, 1, 300, 2);
+        light.rotateX(Math.PI);
+        light.position.y = 1;
+        light.castShadow = true;
+        light.shadow.camera.far = 10000;
         this.container.add(light);
 
         /**
@@ -57,9 +60,9 @@ class Player {
          * @since 1.0.0
          */
         this.playerMove = () => {
-            if (this.container.position.x < this.dx*100) {
+            if (this.container.position.x < this.dx * 100) {
                 this.container.position.x += 2;
-            } else if (this.container.position.x > this.dx*100) {
+            } else if (this.container.position.x > this.dx * 100) {
                 this.container.position.x -= 2;
                 // increment or decrement players position until it reaches destination
             } else if (this.setxPosFlag) {
@@ -69,9 +72,9 @@ class Player {
                 // set flags to false to prevent further changing
             }
 
-            if (this.container.position.z < this.dz*100) {
+            if (this.container.position.z < this.dz * 100) {
                 this.container.position.z += 2;
-            } else if (this.container.position.z > this.dz*100) {
+            } else if (this.container.position.z > this.dz * 100) {
                 this.container.position.z -= 2;
             } else if (this.setzPosFlag) {
                 this.z = this.dz;
