@@ -27,7 +27,10 @@ class Player {
             wireframe: false,
         });
         let mesh = new THREE.Mesh(geometry, material);
-        this.container.add(mesh);
+        // this.container.add(mesh);
+
+        let model = Settings.playerModel;
+        this.container.add(model);
 
         /**
          * Checks if player can move to clicked field
