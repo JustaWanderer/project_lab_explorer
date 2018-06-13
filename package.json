@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/TheCoprobo/projekt_do_stefana#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "eslint": "^4.19.1",
     "express": "^4.16.3",
     "nedb": "^1.8.0"

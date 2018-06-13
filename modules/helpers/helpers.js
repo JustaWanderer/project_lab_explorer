@@ -1,7 +1,3 @@
-module.exports = {
-    db,
-};
-
 const db = {
     /**
      * Inserts one document into the datastore
@@ -41,4 +37,8 @@ const db = {
             });
         });
     },
+};
+
+module.exports = {
+    db,
 };
