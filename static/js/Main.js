@@ -91,9 +91,10 @@ $(document).ready(() => {
         * @since 1.0.0
         */
         function render() {
+            let delta = clock.getDelta();
             if (mixers.length > 0) {
                 for (let i = 0; i < mixers.length; i++) {
-                    mixers[i].update(clock.getDelta());
+                    mixers[i].update(delta);
                 }
             }
 
