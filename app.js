@@ -7,7 +7,7 @@ const editorRouter = require('./modules/editor/editor-router');
 app.use(express.static('static'));
 app.use(editorRouter);
 
-app.get('/game', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.resolve('static/index.html'));
 });
 
