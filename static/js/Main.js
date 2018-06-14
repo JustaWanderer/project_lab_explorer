@@ -1,25 +1,33 @@
+let mixers = [];
+
 const loadResources = () => new Promise((resolve, reject) => {
-    loadTextures().then(resolve);
+    loadModels().then(resolve);
 });
 
-const loadTextures = () => new Promise((resolve, reject) => {
-    $(document).trigger('loading-textures-begin');
+const loadModels = () => new Promise((resolve, reject) => {
+    $(document).trigger('loading-models-begin');
     const loader = new ResLoader();
 
-    loader.loadTexture('./resources/textures/floor.png')
-        .then((texture) => {
-            Settings.floorMap = texture;
-        }, console.error);
-    loader.loadTexture('./resources/textures/floor-bump.png')
-        .then((texture) => {
-            Settings.floorBumpMap = texture;
+    loader.loadFBX('resources/models/Player1.fbx')
+        .then((object) => {
+            object.mixer = new THREE.AnimationMixer(object);
+            mixers.push(object.mixer);
+            Settings.player1Model = object;
         }, console.error)
-        .then(resolve);
+        .then(() => {
+            loader.loadFBX('resources/models/Player2.fbx')
+            .then((object) => {
+                object.mixer = new THREE.AnimationMixer(object);
+                mixers.push(object.mixer);
+                Settings.player2Model = object;
+            }, console.error)
+            .then(resolve);
+        });
 });
 
 $(document).ready(() => {
-    // three.js setup
     loadResources().then(() => {
+        // three.js setup
         let clock = new THREE.Clock();
         let scene = new THREE.Scene();
         let camera = new THREE.PerspectiveCamera(
@@ -48,10 +56,16 @@ $(document).ready(() => {
         let generator = new Generator();
         generator.generateLevel(json); // create level from data
         scene.add(generator.container); // add level to scene
+        let player1 = new Player(1);
+        scene.add(player1.container);
+        player1.playAnimation('Armature|Idle');
 
-        let player = new Player();
-        scene.add(player.container);
+        let player2 = new Player(2, 2, 2);
+        scene.add(player2.container);
+        player2.playAnimation('Armature|Idle');
 
+        // test light (to change)
+        let directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 
         let raycaster = new THREE.Raycaster();
         let mouseVector = new THREE.Vector2();
@@ -64,17 +78,28 @@ $(document).ready(() => {
             if (intersects.length > 0) {
                 let x = intersects[0].object.position.x;
                 let z = intersects[0].object.position.z;
-                player.checkForMove(x / 100, z / 100);
+
+                player1.checkForMove(x/100, z/100);
+                player2.checkForMove(x/100, z/100);
             }
         });
 
         /**
-         * Main rendering loop
-         * @method
-         * @since 1.0.0
-         */
+        * Main rendering loop
+        * @method
+        * @since 1.0.0
+        */
         function render() {
-            player.playerMove();
+            let delta = clock.getDelta();
+            if (mixers.length > 0) {
+                for (let i = 0; i < mixers.length; i++) {
+                    mixers[i].update(delta);
+                }
+            }
+
+            player1.playerMove();
+            player2.playerMove();
+          
             requestAnimationFrame(render);
             renderer.render(scene, camera);
         }
