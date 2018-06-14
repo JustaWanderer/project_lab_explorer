@@ -267,8 +267,8 @@ $(document).ready(() => {
                                         h.ajax('/setPos', 'POST', {
                                             player: 1,
                                             playerData: {
-                                                dx: x,
-                                                dz: z,
+                                                dx: player1.dx,
+                                                dz: player1.dz,
                                             },
                                         });
                                     } else {
@@ -281,8 +281,8 @@ $(document).ready(() => {
                                         h.ajax('/setPos', 'POST', {
                                             player: 2,
                                             playerData: {
-                                                dx: x,
-                                                dz: z,
+                                                dx: player2.dx,
+                                                dz: player2.dz,
                                             },
                                         });
                                     }
@@ -296,13 +296,15 @@ $(document).ready(() => {
                                 h.ajax('/checkMoves', 'GET', body)
                                     .then((data) => {
                                         console.log(data);
-                                        if (yourPlayer == 1) {
-                                            if (data.dx != player2.dx || data.dy != player2.dz) {
-                                                player2.checkForMove(data.dx, data.dz);
-                                            }
-                                        } else {
-                                            if (data.dx != player1.dx || data.dy != player1.dz) {
-                                                player1.checkForMove(data.dx, data.dz);
+                                        if (data.dx && data.dz) {
+                                            if (yourPlayer == 1) {
+                                                if (data.dx != player2.dx || data.dy != player2.dz) {
+                                                    player2.checkForMove(data.dx, data.dz);
+                                                }
+                                            } else {
+                                                if (data.dx != player1.dx || data.dy != player1.dz) {
+                                                    player1.checkForMove(data.dx, data.dz);
+                                                }
                                             }
                                         }
                                     }, console.log);

@@ -19,17 +19,19 @@ app.get('/game', (req, res) => {
 
 let userNum = 0;
 let player1 = {
-    dx: 0,
-    dz: 0,
+    dx: undefined,
+    dz: undefined,
 };
 let player2 = {
-    dx: 2,
-    dz: 2,
+    dx: undefined,
+    dz: undefined,
 };
 
 app.get('/connect', (req, res) => {
     userNum++;
-    res.json({player: userNum});
+    res.json({
+        player: userNum,
+    });
 });
 
 app.get('/checkMoves', (req, res) => {
@@ -42,19 +44,27 @@ app.get('/checkMoves', (req, res) => {
 
 app.post('/setPos', (req, res) => {
     if (req.body.player == 1) {
-        player1 = req.body.playerData;
+        player1.dx = req.body['playerData[dx]'];
+        player1.dz = req.body['playerData[dz]'];
         res.send('ok');
     } else {
-        player2 = req.body.playerData;
+        player2.dx = req.body['playerData[dx]'];
+        player2.dz = req.body['playerData[dz]'];
         res.send('ok');
     }
+    console.log(player1);
+    console.log(player2);
 });
 
 app.get('/listen', (req, res) => {
     if (userNum === 2) {
-        res.json({ok: true});
+        res.json({
+            ok: true,
+        });
     } else {
-        res.json({wait: true});
+        res.json({
+            wait: true,
+        });
     }
 });
 
