@@ -186,6 +186,27 @@ $(document).ready(() => {
                 }
             });
 
+            let minimapVisible = false;
+            let minimapObj = new Minimap(json, player1, player2);
+            let minimap = $(minimapObj.getCanvas())
+                .css('position', 'absolute')
+                .css('top', 100)
+                .css('right', 0)
+                .appendTo($('#root'))
+                .hide();
+
+            $(document).keydown((event) => {
+                if (event.which === 77) {
+                    if (minimapVisible) {
+                        minimapVisible = false;
+                        minimap.hide();
+                    } else {
+                        minimapVisible = true;
+                        minimap.show();
+                    }
+                }
+            });
+
             /**
              * Main rendering loop
              * @method
@@ -198,7 +219,7 @@ $(document).ready(() => {
                         mixers[i].update(delta);
                     }
                 }
-
+                minimapObj.update();
                 player1.playerMove();
                 player2.playerMove();
                 requestAnimationFrame(render);
