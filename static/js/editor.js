@@ -19,6 +19,8 @@ $(document).on('DOMContentLoaded', (event) => {
         'dimgrey',
         'lightgrey',
         'darkred',
+        'beige',
+        'bisque',
     ];
 
     let keys = [];
@@ -57,7 +59,7 @@ $(document).on('DOMContentLoaded', (event) => {
         if (type.code === 2) {
             let key = {
                 type: 'key',
-                id: keys.length, // how much health takes away
+                id: keys.length,
             };
             pre.text('key\n' + key.id);
             f.content = key;
@@ -65,16 +67,16 @@ $(document).on('DOMContentLoaded', (event) => {
         }
         if (type.code === 3 || type.code === 4 || type.code === 5) {
             let sw = {
-                id: switches.length, // how much health takes away
+                id: keys.length,
             };
             pre.text(type.name + '\n' + sw.id);
             f.content = sw;
-            switches.push(sw);
+            keys.push(sw);
         }
         if (type.code === 6) {
             f.content = {
                 type: 'fireplace',
-                strength: 1, // how much health takes away
+                strength: 1, // how much health gives
             };
         }
         if (type.code === 8) {
@@ -91,7 +93,6 @@ $(document).on('DOMContentLoaded', (event) => {
      * @param {number} z y parameter
      * @param {string} dir direction (n, w, s, e)
      * @param {object} type door object imported from server
-     * @param {Boolean} [reflect] whether to automatically set doors on the other side (default true)
      */
     const setDoor = (x, z, dir, type) => {
         $('#' + dir + '-field-' + x + '-' + z)

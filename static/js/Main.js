@@ -289,6 +289,40 @@ $(document).ready(() => {
                                 }
                             });
 
+                            let minimapVisible = false;
+                            let minimapObj = new Minimap(json, player1, player2);
+                            let minimap = $(minimapObj.getCanvas())
+                                .css('position', 'absolute')
+                                .css('top', 100)
+                                .css('right', 0)
+                                .appendTo($('#root'))
+                                .hide();
+
+                            $(document).keydown((event) => {
+                                if (event.which === 77) {
+                                    if (minimapVisible) {
+                                        minimapVisible = false;
+                                        minimap.hide();
+                                    } else {
+                                        minimapVisible = true;
+                                        minimap.show();
+                                    }
+                                }
+                            });
+
+                            let uiObj;
+                            if (yourPlayer == 1) {
+                                uiObj = new UI(json, player1);
+                            } else {
+                                uiObj = new UI(json, player2);
+                            }
+
+                            $(uiObj.getCanvas())
+                                .css('position', 'absolute')
+                                .css('top', 0)
+                                .css('left', 0)
+                                .appendTo($('#root'));
+
                             let iid2 = setInterval(() => {
                                 let body = {
                                     player: yourPlayer,
@@ -323,6 +357,10 @@ $(document).ready(() => {
                                     }
                                 }
                                 orbitControl.update();
+                                uiObj.update();
+                                minimapObj.update();
+                                player1.time = Date.now() - player1.birthdate;
+                                player2.time = Date.now() - player2.birthdate;
                                 if (yourPlayer == 1) {
                                     player1.playerMove(orbitControl);
                                     player2.playerMove();

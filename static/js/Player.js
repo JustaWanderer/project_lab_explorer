@@ -23,6 +23,11 @@ class Player {
         // player model
         this.model;
 
+        this.hp = 3; // Health Points
+        this.inventory = [null, null];
+        this.time = 0;
+        this.birthdate = Date.now();
+
         // adding model depending on player number
         if (number == 1) {
             this.model = Settings.player1Model;
