@@ -27,8 +27,15 @@ class OneWayDoor {
         let w2 = w1.clone();
         this.container.add(w1);
         this.container.add(w2);
-        w1.position.x -= 37.5;
-        w2.position.x += 37.5;
+        w1.position.x -= Settings.tileWidth / 4 + Settings.tileWidth / 8;
+        w2.position.x += Settings.tileWidth / 4 + Settings.tileWidth / 8;
+        if (dir == 'in') {
+            w1.position.z -= 1;
+            w2.position.z -= 1;
+        } else {
+            w1.position.z += 1;
+            w2.position.z += 1;
+        }
         let forceGeometry = new THREE.PlaneGeometry(Settings.tileWidth / 2, Settings.tileWidth / 2);
         let forceMaterial = new THREE.MeshPhongMaterial({
             map: Settings.oneWayForceMap,
