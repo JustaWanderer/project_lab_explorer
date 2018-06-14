@@ -1,8 +1,9 @@
 const loadResources = () => new Promise((resolve, reject) => {
-    loadTextures().then(resolve);
+    loadWallTextures()
+        .then(resolve);
 });
 
-const loadTextures = () => new Promise((resolve, reject) => {
+const loadWallTextures = () => new Promise((resolve, reject) => {
     $(document).trigger('loading-textures-begin');
     const loader = new ResLoader();
 
@@ -42,7 +43,31 @@ const loadTextures = () => new Promise((resolve, reject) => {
                                                                 .then((texture) => {
                                                                     Settings.lockedDoorBumpMap = texture;
                                                                 }, console.error)
-                                                                .then(resolve);
+                                                                .then(() => {
+                                                                    loader.loadTexture('./resources/textures/one-way-door-bump.png')
+                                                                        .then((texture) => {
+                                                                            Settings.oneWayDoorBumpMap = texture;
+                                                                        }, console.error)
+                                                                        .then(() => {
+                                                                            loader.loadTexture('./resources/textures/one-way-in-door.png')
+                                                                                .then((texture) => {
+                                                                                    Settings.oneWayInDoorMap = texture;
+                                                                                }, console.error)
+                                                                                .then(() => {
+                                                                                    loader.loadTexture('./resources/textures/one-way-out-door.png')
+                                                                                        .then((texture) => {
+                                                                                            Settings.oneWayOutDoorMap = texture;
+                                                                                        }, console.error)
+                                                                                        .then(() => {
+                                                                                            loader.loadTexture('./resources/textures/one-way-force.png')
+                                                                                                .then((texture) => {
+                                                                                                    Settings.oneWayForceMap = texture;
+                                                                                                }, console.error)
+                                                                                                .then(resolve);
+                                                                                        });
+                                                                                });
+                                                                        });
+                                                                });
                                                         });
                                                 });
                                         });

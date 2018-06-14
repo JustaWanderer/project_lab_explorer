@@ -84,6 +84,10 @@ class Generator {
                         bumpMap: Settings.lockedDoorBumpMap,
                     });
                     wall = new THREE.Mesh(geometry, material);
+                } else if (doorType.code === 3) {
+                    wall = new OneWayDoor('in').container;
+                } else if (doorType.code === 4) {
+                    wall = new OneWayDoor('out').container;
                 } else {
                     wallExists = false;
                 }
@@ -91,19 +95,19 @@ class Generator {
                     switch (i) {
                         case 0:
                             wall.position.x = field.x * Settings.tileWidth;
-                            wall.position.z = field.z * Settings.tileWidth - Settings.tileWidth / 2;
+                            wall.position.z = field.z * Settings.tileWidth - Settings.tileWidth / 2 + 0.1;
                             break;
                         case 1:
-                            wall.position.x = field.x * Settings.tileWidth + Settings.tileWidth / 2;
+                            wall.position.x = field.x * Settings.tileWidth + Settings.tileWidth / 2 - 0.1;
                             wall.position.z = field.z * Settings.tileWidth;
                             wall.rotateY(Math.PI / 2);
                             break;
                         case 2:
                             wall.position.x = field.x * Settings.tileWidth;
-                            wall.position.z = field.z * Settings.tileWidth + Settings.tileWidth / 2;
+                            wall.position.z = field.z * Settings.tileWidth + Settings.tileWidth / 2 - 0.1;
                             break;
                         case 3:
-                            wall.position.x = field.x * Settings.tileWidth - Settings.tileWidth / 2;
+                            wall.position.x = field.x * Settings.tileWidth - Settings.tileWidth / 2 + 0.1;
                             wall.position.z = field.z * Settings.tileWidth;
                             wall.rotateY(Math.PI / 2);
                             break;
