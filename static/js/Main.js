@@ -250,7 +250,7 @@ $(document).ready(() => {
                             $(document).mousedown((event) => {
                                 mouseVector.x = (event.clientX / $(window).width()) * 2 - 1;
                                 mouseVector.y = -(event.clientY / $(window).height()) * 2 + 1;
-
+fg
                                 raycaster.setFromCamera(mouseVector, camera);
                                 let intersects = raycaster.intersectObjects(generator.container.children);
                                 if (intersects.length > 0 && intersects[0].object.name.startsWith('tile')) {
