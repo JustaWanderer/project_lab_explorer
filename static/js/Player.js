@@ -49,10 +49,56 @@ class Player {
          * @since 1.0.0
          * @param {Number} x x position of clicked field
          * @param {Number} z z position of clicked field
+         * @param {Number} info information about field that player is standing on
          */
-        this.checkForMove = (x, z) => {
+        this.checkForMove = (x, z, info) => {
+            let block = true;
+            console.log(info);
+
+            if (x - this.x == 1) {
+                this.model.rotation.y = Math.PI / 2;
+
+                if (info.doorE) {
+                    if (info.doorE.code == 1 || info.doorE.code == 3) {
+                        block = false;
+                    }
+                } else {
+                    block = false;
+                }
+            } else if (x - this.x == -1) {
+                this.model.rotation.y = -Math.PI / 2;
+
+                if (info.doorW) {
+                    if (info.doorW.code == 1 || info.doorW.code == 3) {
+                        block = false;
+                    }
+                } else {
+                    block = false;
+                }
+            } else if (z - this.z == 1) {
+                this.model.rotation.y = 0;
+
+                if (info.doorS) {
+                    if (info.doorS.code == 1 || info.doorS.code == 3) {
+                        block = false;
+                    }
+                } else {
+                    block = false;
+                }
+            } else if (z - this.z == -1) {
+                this.model.rotation.y = Math.PI;
+
+                if (info.doorN) {
+                    if (info.doorN.code == 1 || info.doorN.code == 3) {
+                        block = false;
+                    }
+                } else {
+                    block = false;
+                }
+            }
+
             let distance = Math.sqrt(Math.pow((x - this.x), 2) + Math.pow((z - this.z), 2)); // distance from player to clicked tile
-            if (distance == 1 && !this.setxPosFlag && !this.setzPosFlag) {
+            if (distance == 1 && !this.setxPosFlag && !this.setzPosFlag && !block) {
                 // setting destination coordinates
                 this.dx = x;
                 this.dz = z;
@@ -65,16 +111,6 @@ class Player {
                 // play walking animation
                 this.stopAnimation();
                 this.playAnimation('Armature|Armature|Armature|Walk|Armature|Walk');
-            }
-
-            if (this.dx - this.x == 1) {
-                this.model.rotation.y = Math.PI / 2;
-            } else if (this.dx - this.x == -1) {
-                this.model.rotation.y = -Math.PI / 2;
-            } else if (this.dz - this.z == 1) {
-                this.model.rotation.y = 0;
-            } else if (this.dz - this.z == -1) {
-                this.model.rotation.y = Math.PI;
             }
         };
 

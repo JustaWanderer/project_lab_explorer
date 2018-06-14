@@ -98,7 +98,55 @@ const loadModels = () => new Promise((resolve, reject) => {
                     mixers.push(object.mixer);
                     Settings.player2Model = object;
                 }, console.error)
-                .then(resolve);
+                .then(() => {
+                    loader.loadFBX('resources/models/Enemy.fbx')
+                    .then((object) => {
+                        Settings.enemyModels.push(object);
+                    }, console.error)
+                    .then(() => {
+                        loader.loadFBX('resources/models/Enemy.fbx')
+                        .then((object) => {
+                            Settings.enemyModels.push(object);
+                        }, console.error)
+                        .then(() => {
+                            loader.loadFBX('resources/models/Enemy.fbx')
+                            .then((object) => {
+                                Settings.enemyModels.push(object);
+                            }, console.error)
+                            .then(() => {
+                                loader.loadFBX('resources/models/Enemy.fbx')
+                                .then((object) => {
+                                    Settings.enemyModels.push(object);
+                                }, console.error)
+                                .then(() => {
+                                    loader.loadFBX('resources/models/Enemy.fbx')
+                                    .then((object) => {
+                                        Settings.enemyModels.push(object);
+                                    }, console.error)
+                                    .then(() => {
+                                        loader.loadFBX('resources/models/Enemy.fbx')
+                                        .then((object) => {
+                                            Settings.enemyModels.push(object);
+                                        }, console.error)
+                                        .then(() => {
+                                            loader.loadFBX('resources/models/Enemy.fbx')
+                                            .then((object) => {
+                                                Settings.enemyModels.push(object);
+                                            }, console.error)
+                                            .then(() => {
+                                                loader.loadFBX('resources/models/Enemy.fbx')
+                                                .then((object) => {
+                                                    Settings.enemyModels.push(object);
+                                                }, console.error)
+                                                .then(resolve);
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
         });
 });
 
@@ -154,21 +202,19 @@ $(document).ready(() => {
             generator.generateLevel(json); // create level from data
             scene.add(generator.container); // add level to scene
 
-
-            let player1 = new Player(1);
+            let player1 = new Player(1, generator.player1start.x, generator.player1start.z);
             scene.add(player1.container);
             player1.playAnimation('Armature|Armature|Armature|Idle|Armature|Idle');
 
-            let player2 = new Player(2, 2, 2);
+            let player2 = new Player(2, generator.player2start.x, generator.player2start.z);
             scene.add(player2.container);
             player2.playAnimation('Armature|Armature|Armature|Idle|Armature|Idle');
 
             // test light (to change)
-            let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            let directionalLight = new THREE.DirectionalLight(0xffffff, 0.2);
             scene.add(directionalLight);
-            directionalLight.rotateX(Math.PI / 16);
-            directionalLight.rotateZ(Math.PI / 16);
-
+            directionalLight.position.set(2, 200, 2);
+            directionalLight.target.position.set(0, 0, 0);
 
             let raycaster = new THREE.Raycaster();
             let mouseVector = new THREE.Vector2();
@@ -181,8 +227,13 @@ $(document).ready(() => {
                 if (intersects.length > 0 && intersects[0].object.name.startsWith('tile')) {
                     let x = intersects[0].object.position.x;
                     let z = intersects[0].object.position.z;
-                    player1.checkForMove(x / Settings.tileWidth, z / Settings.tileWidth);
-                    player2.checkForMove(x / Settings.tileWidth, z / Settings.tileWidth);
+                    let info;
+                    for (let i = 0; i < json.board.length; i++) {
+                        if (json.board[i].x == player1.x && json.board[i].z == player1.z) {
+                            info = json.board[i];
+                        }
+                    }
+                    player1.checkForMove(x / Settings.tileWidth, z / Settings.tileWidth, info);
                 }
             });
 

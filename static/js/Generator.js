@@ -17,6 +17,7 @@ class Generator {
          * @param {Object} data data for building level
          */
         this.generateLevel = (data) => {
+            let enemyModelIndex = 0;
             for (let i = 0; i < data.board.length; i++) {
                 let geometry = new THREE.PlaneGeometry(Settings.tileWidth, Settings.tileWidth);
                 let material = new THREE.MeshPhongMaterial({
@@ -34,6 +35,25 @@ class Generator {
                 tile.rotateX(Math.PI / 2);
                 tile.recieveShadow = true;
                 tile.castShadow = true;
+
+                if (data.board[i].content) {
+                    if (data.board[i].content.type == 'enemy') {
+                        let enemy = new Enemy(data.board[i].x, data.board[i].z, enemyModelIndex);
+                        this.container.add(enemy.container);
+                        enemy.playAnimation('Idel_Animation|Idle');
+                        enemyModelIndex++;
+                    }
+                }
+
+                if (data.board[i].type == 7) {
+                    this.player1start = {x: data.board[i].x, z: data.board[i].z};
+                } else if (data.board[i].type == 8) {
+                    this.player2start = {x: data.board[i].x, z: data.board[i].z};
+                } else if (data.board[i].type == 9) {
+                    this.player1finish = {x: data.board[i].x, z: data.board[i].z};
+                } else if (data.board[i].type == 10) {
+                    this.player2finish = {x: data.board[i].x, z: data.board[i].z};
+                }
 
                 this.container.add(tile);
             }
