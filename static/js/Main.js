@@ -205,6 +205,7 @@ $(document).ready(() => {
             let player1 = new Player(1, generator.player1start.x, generator.player1start.z);
             scene.add(player1.container);
             player1.playAnimation('Armature|Armature|Armature|Idle|Armature|Idle');
+            orbitControl.target = player1.container.position;
 
             let player2 = new Player(2, generator.player2start.x, generator.player2start.z);
             scene.add(player2.container);
@@ -249,13 +250,12 @@ $(document).ready(() => {
                         mixers[i].update(delta);
                     }
                 }
-
-                player1.playerMove();
+                orbitControl.update();
+                player1.playerMove(orbitControl);
                 player2.playerMove();
                 requestAnimationFrame(render);
                 renderer.render(scene, camera);
             }
-
 
             render(); // let's get this party started
         }, console.error);

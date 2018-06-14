@@ -53,7 +53,6 @@ class Player {
          */
         this.checkForMove = (x, z, info) => {
             let block = true;
-            console.log(info);
 
             if (x - this.x == 1) {
                 this.model.rotation.y = Math.PI / 2;
@@ -118,8 +117,9 @@ class Player {
          * Moves player to dx, dz
          * @method
          * @since 1.0.0
+         * @param {Object} orbitControl orbitControls camera
          */
-        this.playerMove = () => {
+        this.playerMove = (orbitControl) => {
             if (this.container.position.x < this.dx * Settings.tileWidth) {
                 this.container.position.x += 2;
             } else if (this.container.position.x > this.dx * Settings.tileWidth) {
