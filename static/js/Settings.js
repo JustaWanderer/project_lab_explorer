@@ -1,3 +1,1 @@
-let Settings = {
-    tileWidth: 100,
-};
+let Settings = {};
