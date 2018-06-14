@@ -34,12 +34,12 @@ class Player {
         // set player starting position
         this.container.position.x = x*100;
         this.container.position.z = z*100;
-        // let light = new THREE.PointLight(0xffffff, 1, 300, 2);
-        // light.rotateX(Math.PI);
-        // light.position.y = 1;
-        // light.castShadow = true;
-        // light.shadow.camera.far = 10000;
-        // this.container.add(light);
+        let light = new THREE.PointLight(0xffffff, 1, 300, 2);
+        light.rotateX(Math.PI);
+        light.position.y = 1;
+        light.castShadow = true;
+        light.shadow.camera.far = 10000;
+        this.container.add(light);
 
         /**
          * Checks if player can move to clicked field
@@ -62,7 +62,7 @@ class Player {
                 }
                 // play walking animation
                 this.stopAnimation();
-                this.playAnimation('Armature|Walk');
+                this.playAnimation('Armature|Armature|Armature|Walk|Armature|Walk');
             }
 
             if (this.dx - this.x == 1) {
@@ -93,7 +93,7 @@ class Player {
                 this.setxPosFlag = false;
                 // set flags to false to prevent further changing
                 this.stopAnimation();
-                this.playAnimation('Armature|Idle');
+                this.playAnimation('Armature|Armature|Armature|Idle|Armature|Idle');
                 // stop walking animation, play idle animation
             }
 
@@ -105,7 +105,7 @@ class Player {
                 this.z = this.dz;
                 this.setzPosFlag = false;
                 this.stopAnimation();
-                this.playAnimation('Armature|Idle');
+                this.playAnimation('Armature|Armature|Armature|Idle|Armature|Idle');
             }
         };
 

@@ -157,17 +157,17 @@ $(document).ready(() => {
 
             let player1 = new Player(1);
             scene.add(player1.container);
-            player1.playAnimation('Armature|Idle');
+            player1.playAnimation('Armature|Armature|Armature|Idle|Armature|Idle');
 
             let player2 = new Player(2, 2, 2);
             scene.add(player2.container);
-            player2.playAnimation('Armature|Idle');
+            player2.playAnimation('Armature|Armature|Armature|Idle|Armature|Idle');
 
             // test light (to change)
-            // let directionalLight = new THREE.DirectionalLight(0xffffff, 0.01);
-            // scene.add(directionalLight);
-            // directionalLight.rotateX(Math.PI / 16);
-            // directionalLight.rotateZ(Math.PI / 16);
+            let directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            scene.add(directionalLight);
+            directionalLight.rotateX(Math.PI / 16);
+            directionalLight.rotateZ(Math.PI / 16);
 
 
             let raycaster = new THREE.Raycaster();
