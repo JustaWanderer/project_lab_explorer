@@ -2,7 +2,9 @@
     "typeAcquisition": {
         "include": [
             "jquery",
-            "three"
+            "three",
+            "socket.io",
+            "socketio",
         ],
         "exclude": [
             "node_modules"  

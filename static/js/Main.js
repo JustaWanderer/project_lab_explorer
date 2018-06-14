@@ -100,52 +100,52 @@ const loadModels = () => new Promise((resolve, reject) => {
                 }, console.error)
                 .then(() => {
                     loader.loadFBX('resources/models/Enemy.fbx')
-                    .then((object) => {
-                        Settings.enemyModels.push(object);
-                    }, console.error)
-                    .then(() => {
-                        loader.loadFBX('resources/models/Enemy.fbx')
                         .then((object) => {
                             Settings.enemyModels.push(object);
                         }, console.error)
                         .then(() => {
                             loader.loadFBX('resources/models/Enemy.fbx')
-                            .then((object) => {
-                                Settings.enemyModels.push(object);
-                            }, console.error)
-                            .then(() => {
-                                loader.loadFBX('resources/models/Enemy.fbx')
                                 .then((object) => {
                                     Settings.enemyModels.push(object);
                                 }, console.error)
                                 .then(() => {
                                     loader.loadFBX('resources/models/Enemy.fbx')
-                                    .then((object) => {
-                                        Settings.enemyModels.push(object);
-                                    }, console.error)
-                                    .then(() => {
-                                        loader.loadFBX('resources/models/Enemy.fbx')
                                         .then((object) => {
                                             Settings.enemyModels.push(object);
                                         }, console.error)
                                         .then(() => {
                                             loader.loadFBX('resources/models/Enemy.fbx')
-                                            .then((object) => {
-                                                Settings.enemyModels.push(object);
-                                            }, console.error)
-                                            .then(() => {
-                                                loader.loadFBX('resources/models/Enemy.fbx')
                                                 .then((object) => {
                                                     Settings.enemyModels.push(object);
                                                 }, console.error)
-                                                .then(resolve);
-                                            });
+                                                .then(() => {
+                                                    loader.loadFBX('resources/models/Enemy.fbx')
+                                                        .then((object) => {
+                                                            Settings.enemyModels.push(object);
+                                                        }, console.error)
+                                                        .then(() => {
+                                                            loader.loadFBX('resources/models/Enemy.fbx')
+                                                                .then((object) => {
+                                                                    Settings.enemyModels.push(object);
+                                                                }, console.error)
+                                                                .then(() => {
+                                                                    loader.loadFBX('resources/models/Enemy.fbx')
+                                                                        .then((object) => {
+                                                                            Settings.enemyModels.push(object);
+                                                                        }, console.error)
+                                                                        .then(() => {
+                                                                            loader.loadFBX('resources/models/Enemy.fbx')
+                                                                                .then((object) => {
+                                                                                    Settings.enemyModels.push(object);
+                                                                                }, console.error)
+                                                                                .then(resolve);
+                                                                        });
+                                                                });
+                                                        });
+                                                });
                                         });
-                                    });
                                 });
-                            });
                         });
-                    });
                 });
         });
 });
@@ -177,7 +177,6 @@ $(document).ready(() => {
         renderer.setSize($(window).width(), $(window).height());
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        $('#root').append(renderer.domElement);
         // end three.js setup
 
         scene.add(camera);
@@ -205,59 +204,139 @@ $(document).ready(() => {
             let player1 = new Player(1, generator.player1start.x, generator.player1start.z);
             scene.add(player1.container);
             player1.playAnimation('Armature|Armature|Armature|Idle|Armature|Idle');
-            orbitControl.target = player1.container.position;
 
             let player2 = new Player(2, generator.player2start.x, generator.player2start.z);
             scene.add(player2.container);
             player2.playAnimation('Armature|Armature|Armature|Idle|Armature|Idle');
 
-            // test light (to change)
-            let directionalLight = new THREE.DirectionalLight(0xffffff, 0.2);
-            scene.add(directionalLight);
-            directionalLight.position.set(2, 200, 2);
-            directionalLight.target.position.set(0, 0, 0);
+            let yourPlayer; // 1 or 2
 
-            let raycaster = new THREE.Raycaster();
-            let mouseVector = new THREE.Vector2();
-            $(document).mousedown((event) => {
-                mouseVector.x = (event.clientX / $(window).width()) * 2 - 1;
-                mouseVector.y = -(event.clientY / $(window).height()) * 2 + 1;
+            h.ajax('/connect').then((data) => {
+                if (data.player == 1) {
+                    orbitControl.target = player1.container.position;
+                    yourPlayer = 1;
+                    h.ajax('/setPos', 'POST', {
+                        player: 1,
+                        playerData: {
+                            dx: player1.x,
+                            dy: player1.y,
+                        },
+                    });
+                } else {
+                    orbitControl.target = player2.container.position;
+                    yourPlayer = 2;
+                    h.ajax('/setPos', 'POST', {
+                        player: 1,
+                        playerData: {
+                            dx: player2.x,
+                            dy: player2.y,
+                        },
+                    });
+                }
+                let iid = setInterval(() => {
+                    h.ajax('/listen').then((data) => {
+                        if (data.ok) {
+                            clearInterval(iid);
+                            $('#root').append(renderer.domElement);
 
-                raycaster.setFromCamera(mouseVector, camera);
-                let intersects = raycaster.intersectObjects(generator.container.children);
-                if (intersects.length > 0 && intersects[0].object.name.startsWith('tile')) {
-                    let x = intersects[0].object.position.x;
-                    let z = intersects[0].object.position.z;
-                    let info;
-                    for (let i = 0; i < json.board.length; i++) {
-                        if (json.board[i].x == player1.x && json.board[i].z == player1.z) {
-                            info = json.board[i];
+                            // test light (to change)
+                            let directionalLight = new THREE.DirectionalLight(0xffffff, 0.2);
+                            scene.add(directionalLight);
+                            directionalLight.position.set(2, 200, 2);
+                            directionalLight.target.position.set(0, 0, 0);
+
+                            let raycaster = new THREE.Raycaster();
+                            let mouseVector = new THREE.Vector2();
+                            $(document).mousedown((event) => {
+                                mouseVector.x = (event.clientX / $(window).width()) * 2 - 1;
+                                mouseVector.y = -(event.clientY / $(window).height()) * 2 + 1;
+
+                                raycaster.setFromCamera(mouseVector, camera);
+                                let intersects = raycaster.intersectObjects(generator.container.children);
+                                if (intersects.length > 0 && intersects[0].object.name.startsWith('tile')) {
+                                    let x = intersects[0].object.position.x;
+                                    let z = intersects[0].object.position.z;
+                                    let info;
+                                    if (yourPlayer == 1) {
+                                        for (let i = 0; i < json.board.length; i++) {
+                                            if (json.board[i].x == player1.x && json.board[i].z == player1.z) {
+                                                info = json.board[i];
+                                            }
+                                        }
+                                        player1.checkForMove(x / Settings.tileWidth, z / Settings.tileWidth, info);
+                                        h.ajax('/setPos', 'POST', {
+                                            player: 1,
+                                            playerData: {
+                                                dx: x,
+                                                dz: z,
+                                            },
+                                        });
+                                    } else {
+                                        for (let i = 0; i < json.board.length; i++) {
+                                            if (json.board[i].x == player2.x && json.board[i].z == player2.z) {
+                                                info = json.board[i];
+                                            }
+                                        }
+                                        player2.checkForMove(x / Settings.tileWidth, z / Settings.tileWidth, info);
+                                        h.ajax('/setPos', 'POST', {
+                                            player: 2,
+                                            playerData: {
+                                                dx: x,
+                                                dz: z,
+                                            },
+                                        });
+                                    }
+                                }
+                            });
+
+                            let iid2 = setInterval(() => {
+                                let body = {
+                                    player: yourPlayer,
+                                };
+                                h.ajax('/checkMoves', 'GET', body)
+                                    .then((data) => {
+                                        console.log(data);
+                                        if (yourPlayer == 1) {
+                                            if (data.dx != player2.dx || data.dy != player2.dz) {
+                                                player2.checkForMove(data.dx, data.dz);
+                                            }
+                                        } else {
+                                            if (data.dx != player1.dx || data.dy != player1.dz) {
+                                                player1.checkForMove(data.dx, data.dz);
+                                            }
+                                        }
+                                    }, console.log);
+                            }, 500);
+
+                            /**
+                             * Main rendering loop
+                             * @method
+                             * @since 1.0.0
+                             */
+                            function render() {
+                                let delta = clock.getDelta();
+                                if (mixers.length > 0) {
+                                    for (let i = 0; i < mixers.length; i++) {
+                                        mixers[i].update(delta);
+                                    }
+                                }
+                                orbitControl.update();
+                                if (yourPlayer == 1) {
+                                    player1.playerMove(orbitControl);
+                                    player2.playerMove();
+                                } else {
+                                    player1.playerMove();
+                                    player2.playerMove(orbitControl);
+                                }
+                                requestAnimationFrame(render);
+                                renderer.render(scene, camera);
+                            }
+
+                            render(); // let's get this party started
                         }
-                    }
-                    player1.checkForMove(x / Settings.tileWidth, z / Settings.tileWidth, info);
-                }
+                    });
+                }, 300);
             });
-
-            /**
-             * Main rendering loop
-             * @method
-             * @since 1.0.0
-             */
-            function render() {
-                let delta = clock.getDelta();
-                if (mixers.length > 0) {
-                    for (let i = 0; i < mixers.length; i++) {
-                        mixers[i].update(delta);
-                    }
-                }
-                orbitControl.update();
-                player1.playerMove(orbitControl);
-                player2.playerMove();
-                requestAnimationFrame(render);
-                renderer.render(scene, camera);
-            }
-
-            render(); // let's get this party started
         }, console.error);
     }, console.error);
 });

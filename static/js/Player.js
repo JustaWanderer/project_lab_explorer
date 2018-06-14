@@ -51,7 +51,7 @@ class Player {
          * @param {Number} z z position of clicked field
          * @param {Number} info information about field that player is standing on
          */
-        this.checkForMove = (x, z, info) => {
+        this.checkForMove = (x, z, info = null) => {
             let block = true;
 
             if (x - this.x == 1) {
