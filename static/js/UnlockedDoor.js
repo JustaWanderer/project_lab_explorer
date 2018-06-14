@@ -7,7 +7,7 @@ class UnlockedDoor {
      */
     constructor() {
         this.container = new THREE.Object3D();
-        let geometry = new THREE.PlaneGeometry(Settings.tileWidth / 4, 50);
+        let geometry = new THREE.PlaneGeometry(Settings.tileWidth / 4, Settings.tileWidth / 2);
         let material = new THREE.MeshPhongMaterial({
             map: Settings.unlockedDoorMap,
             bumpMap: Settings.unlockedDoorBumpMap,
@@ -17,7 +17,7 @@ class UnlockedDoor {
         let w2 = w1.clone();
         this.container.add(w1);
         this.container.add(w2);
-        w1.position.x -= 37.5;
-        w2.position.x += 37.5;
+        w1.position.x -= Settings.tileWidth / 4 + Settings.tileWidth / 8;
+        w2.position.x += Settings.tileWidth / 4 + Settings.tileWidth / 8;
     }
 }

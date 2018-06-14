@@ -18,7 +18,7 @@ class Generator {
          */
         this.generateLevel = (data) => {
             for (let i = 0; i < data.board.length; i++) {
-                let geometry = new THREE.PlaneGeometry(100, 100);
+                let geometry = new THREE.PlaneGeometry(Settings.tileWidth, Settings.tileWidth);
                 let material = new THREE.MeshPhongMaterial({
                     map: Settings.floorMap,
                     bumpMap: Settings.floorBumpMap,
@@ -27,8 +27,8 @@ class Generator {
                 generateWalls(data.board[i]);
                 let tile = new THREE.Mesh(geometry, material);
                 // positioning tile by given data
-                tile.position.x = data.board[i].x * 100;
-                tile.position.z = data.board[i].z * 100;
+                tile.position.x = data.board[i].x * Settings.tileWidth;
+                tile.position.z = data.board[i].z * Settings.tileWidth;
                 tile.position.y = -30;
                 tile.name = 'tile-' + data.board[i].x + '-' + data.board[i].z;
                 tile.rotateX(Math.PI / 2);
@@ -64,7 +64,7 @@ class Generator {
                 if (doorType === null) {
                     wallExists = false;
                 } else if (doorType.code === 0) {
-                    geometry = new THREE.PlaneGeometry(Settings.tileWidth, 50);
+                    geometry = new THREE.PlaneGeometry(Settings.tileWidth, Settings.tileWidth / 2);
                     material = new THREE.MeshPhongMaterial({
                         wireframe: false,
                         map: Settings.wallMap,
@@ -75,7 +75,7 @@ class Generator {
                 } else if (doorType.code === 1) {
                     wall = new UnlockedDoor().container;
                 } else if (doorType.code === 2) {
-                    geometry = new THREE.PlaneGeometry(Settings.tileWidth, 50);
+                    geometry = new THREE.PlaneGeometry(Settings.tileWidth, Settings.tileWidth / 2);
                     material = new THREE.MeshPhongMaterial({
                         wireframe: false,
                         map: Settings.lockedDoorMap,

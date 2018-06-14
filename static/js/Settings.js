@@ -1,3 +1,3 @@
 let Settings = {
-    tileWidth: 100,
+    tileWidth: 200,
 };

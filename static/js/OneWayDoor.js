@@ -8,7 +8,7 @@ class OneWayDoor {
      */
     constructor(dir) {
         this.container = new THREE.Object3D();
-        let geometry = new THREE.PlaneGeometry(Settings.tileWidth / 4, 50);
+        let geometry = new THREE.PlaneGeometry(Settings.tileWidth / 4, Settings.tileWidth / 2);
         let material;
         if (dir == 'in') {
             material = new THREE.MeshPhongMaterial({
@@ -29,7 +29,7 @@ class OneWayDoor {
         this.container.add(w2);
         w1.position.x -= 37.5;
         w2.position.x += 37.5;
-        let forceGeometry = new THREE.PlaneGeometry(Settings.tileWidth / 2, 50);
+        let forceGeometry = new THREE.PlaneGeometry(Settings.tileWidth / 2, Settings.tileWidth / 2);
         let forceMaterial = new THREE.MeshPhongMaterial({
             map: Settings.oneWayForceMap,
             side: THREE.DoubleSide,

@@ -30,10 +30,12 @@ class Player {
             this.model = Settings.player2Model;
         }
         this.container.add(this.model);
+        this.model.scale.set(0.55, 0.55, 0.55);
 
         // set player starting position
-        this.container.position.x = x*100;
-        this.container.position.z = z*100;
+        this.container.position.x = x * Settings.tileWidth;
+        this.container.position.z = z * Settings.tileWidth;
+        this.container.position.y = -30;
         let light = new THREE.PointLight(0xffffff, 1, 300, 2);
         light.rotateX(Math.PI);
         light.position.y = 1;
@@ -66,9 +68,9 @@ class Player {
             }
 
             if (this.dx - this.x == 1) {
-                this.model.rotation.y = Math.PI/2;
+                this.model.rotation.y = Math.PI / 2;
             } else if (this.dx - this.x == -1) {
-                this.model.rotation.y = -Math.PI/2;
+                this.model.rotation.y = -Math.PI / 2;
             } else if (this.dz - this.z == 1) {
                 this.model.rotation.y = 0;
             } else if (this.dz - this.z == -1) {
@@ -82,9 +84,9 @@ class Player {
          * @since 1.0.0
          */
         this.playerMove = () => {
-            if (this.container.position.x < this.dx * 100) {
+            if (this.container.position.x < this.dx * Settings.tileWidth) {
                 this.container.position.x += 2;
-            } else if (this.container.position.x > this.dx * 100) {
+            } else if (this.container.position.x > this.dx * Settings.tileWidth) {
                 this.container.position.x -= 2;
                 // increment or decrement players position until it reaches destination
             } else if (this.setxPosFlag) {
@@ -97,9 +99,9 @@ class Player {
                 // stop walking animation, play idle animation
             }
 
-            if (this.container.position.z < this.dz * 100) {
+            if (this.container.position.z < this.dz * Settings.tileWidth) {
                 this.container.position.z += 2;
-            } else if (this.container.position.z > this.dz * 100) {
+            } else if (this.container.position.z > this.dz * Settings.tileWidth) {
                 this.container.position.z -= 2;
             } else if (this.setzPosFlag) {
                 this.z = this.dz;

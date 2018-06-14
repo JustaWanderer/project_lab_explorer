@@ -181,8 +181,8 @@ $(document).ready(() => {
                 if (intersects.length > 0 && intersects[0].object.name.startsWith('tile')) {
                     let x = intersects[0].object.position.x;
                     let z = intersects[0].object.position.z;
-                    player1.checkForMove(x / 100, z / 100);
-                    player2.checkForMove(x / 100, z / 100);
+                    player1.checkForMove(x / Settings.tileWidth, z / Settings.tileWidth);
+                    player2.checkForMove(x / Settings.tileWidth, z / Settings.tileWidth);
                 }
             });
 
