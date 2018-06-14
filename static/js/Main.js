@@ -207,6 +207,13 @@ $(document).ready(() => {
                 }
             });
 
+            let uiObj = new UI(json, player1);
+            $(uiObj.getCanvas())
+                .css('position', 'absolute')
+                .css('top', 0)
+                .css('left', 0)
+                .appendTo($('#root'));
+
             /**
              * Main rendering loop
              * @method
@@ -219,9 +226,12 @@ $(document).ready(() => {
                         mixers[i].update(delta);
                     }
                 }
+                uiObj.update();
                 minimapObj.update();
                 player1.playerMove();
                 player2.playerMove();
+                player1.time = Date.now() - player1.birthdate;
+                player2.time = Date.now() - player2.birthdate;
                 requestAnimationFrame(render);
                 renderer.render(scene, camera);
             }
