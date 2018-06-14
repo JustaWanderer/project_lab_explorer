@@ -56,7 +56,6 @@ $(document).ready(() => {
         let generator = new Generator();
         generator.generateLevel(json); // create level from data
         scene.add(generator.container); // add level to scene
-
         let player1 = new Player(1);
         scene.add(player1.container);
         player1.playAnimation('Armature|Idle');
@@ -67,7 +66,6 @@ $(document).ready(() => {
 
         // test light (to change)
         let directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        scene.add(directionalLight);
 
         let raycaster = new THREE.Raycaster();
         let mouseVector = new THREE.Vector2();
@@ -80,6 +78,7 @@ $(document).ready(() => {
             if (intersects.length > 0) {
                 let x = intersects[0].object.position.x;
                 let z = intersects[0].object.position.z;
+
                 player1.checkForMove(x/100, z/100);
                 player2.checkForMove(x/100, z/100);
             }
@@ -100,6 +99,7 @@ $(document).ready(() => {
 
             player1.playerMove();
             player2.playerMove();
+          
             requestAnimationFrame(render);
             renderer.render(scene, camera);
         }
