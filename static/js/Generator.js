@@ -18,18 +18,17 @@ class Generator {
          */
         this.generateLevel = (data) => {
             for (let i = 0; i < data.board.length; i++) {
-                let geometry = new THREE.PlaneGeometry(Settings.tileWidth, Settings.tileWidth);
+                let geometry = new THREE.PlaneGeometry(100, 100);
                 let material = new THREE.MeshPhongMaterial({
-                    wireframe: false,
                     map: Settings.floorMap,
-                    side: THREE.DoubleSide,
                     bumpMap: Settings.floorBumpMap,
+                    side: THREE.DoubleSide,
                 });
                 generateWalls(data.board[i]);
                 let tile = new THREE.Mesh(geometry, material);
                 // positioning tile by given data
-                tile.position.x = data.board[i].x * Settings.tileWidth;
-                tile.position.z = data.board[i].z * Settings.tileWidth;
+                tile.position.x = data.board[i].x * 100;
+                tile.position.z = data.board[i].z * 100;
                 tile.position.y = -30;
                 tile.name = 'tile-' + data.board[i].x + '-' + data.board[i].z;
                 tile.rotateX(Math.PI / 2);
