@@ -21,10 +21,12 @@ let userNum = 0;
 let player1 = {
     dx: undefined,
     dz: undefined,
+    type: 'alive',
 };
 let player2 = {
     dx: undefined,
     dz: undefined,
+    type: 'alive',
 };
 
 app.get('/connect', (req, res) => {
@@ -44,12 +46,21 @@ app.get('/checkMoves', (req, res) => {
 
 app.post('/setPos', (req, res) => {
     if (req.body.player == 1) {
-        player1.dx = req.body['playerData[dx]'];
-        player1.dz = req.body['playerData[dz]'];
+        if (req.body.type == 'loss') {
+            player1.type = 'loss';
+        } else {
+            player1.dx = req.body['playerData[dx]'];
+            player1.dz = req.body['playerData[dz]'];
+        }
+
         res.send('ok');
     } else {
-        player2.dx = req.body['playerData[dx]'];
-        player2.dz = req.body['playerData[dz]'];
+        if (req.body.type == 'loss') {
+            player2.type = 'loss';
+        } else {
+            player2.dx = req.body['playerData[dx]'];
+            player2.dz = req.body['playerData[dz]'];
+        }
         res.send('ok');
     }
     console.log(player1);

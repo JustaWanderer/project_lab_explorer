@@ -275,9 +275,7 @@ $(document).ready(() => {
                                             uiObj.loss();
                                             h.ajax('/setPos', 'POST', {
                                                 player: 1,
-                                                playerData: {
-                                                    type: 'loss',
-                                                },
+                                                type: 'loss',
                                             });
                                         }
 
@@ -299,9 +297,7 @@ $(document).ready(() => {
                                             uiObj.loss();
                                             h.ajax('/setPos', 'POST', {
                                                 player: 2,
-                                                playerData: {
-                                                    type: 'loss',
-                                                },
+                                                type: 'loss',
                                             });
                                         }
 
@@ -356,7 +352,9 @@ $(document).ready(() => {
                                 };
                                 h.ajax('/checkMoves', 'GET', body)
                                     .then((data) => {
-                                        if (data.dx && data.dz) {
+                                        if (data.type == 'loss') {
+                                            uiObj.loss();
+                                        } else if (data.dx && data.dz) {
                                             if (yourPlayer == 1) {
                                                 if (data.dx != player2.dx || data.dy != player2.dz) {
                                                     player2.checkForMove(data.dx, data.dz);
@@ -366,8 +364,6 @@ $(document).ready(() => {
                                                     player1.checkForMove(data.dx, data.dz);
                                                 }
                                             }
-                                        } else if (data.type == 'loss') {
-                                            uiObj.loss();
                                         }
                                     }, console.log);
                             }, 500);
