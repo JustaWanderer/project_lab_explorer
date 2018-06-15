@@ -106,7 +106,14 @@ class Player {
                 }
             }
 
-            let distance = Math.sqrt(Math.pow((x - this.x), 2) + Math.pow((z - this.z), 2)); // distance from player to clicked tile
+            let distance = Math.sqrt(Math.pow((x - this.x), 2) + Math.pow((z - this.z), 2));// distance from player to clicked tile
+            if (distance == 1 && !block && info.code && info.type == 5) {
+                console.log('actiontrigger');
+                $(document).trigger({
+                    type: 'actiontrigger',
+                    id: info.content.id,
+                });
+            }
             if (distance == 1 && !this.setxPosFlag && !this.setzPosFlag && !block) {
                 // setting destination coordinates
                 this.dx = x;

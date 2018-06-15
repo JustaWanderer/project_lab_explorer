@@ -25,6 +25,13 @@ class Generator {
                     bumpMap: Settings.floorBumpMap,
                     side: THREE.DoubleSide,
                 });
+                if (data.board[i].type == 5) {
+                    material = new THREE.MeshPhongMaterial({
+                        map: Settings.pressurePlateMap,
+                        bumpMap: Settings.pressurePlateBumpMap,
+                        side: THREE.DoubleSide,
+                    });
+                }
                 generateWalls(data.board[i]);
                 let tile = new THREE.Mesh(geometry, material);
                 // positioning tile by given data
