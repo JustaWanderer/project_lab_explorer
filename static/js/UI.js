@@ -44,6 +44,10 @@ class UI {
             context.fillText('time: ' + h.formatDate(player.time), 700, 65, 300);
         };
 
+        this.loss = () => {
+            $('#loss').css('display', 'block');
+        };
+
         this.update();
 
         this.getCanvas = () => canvas;

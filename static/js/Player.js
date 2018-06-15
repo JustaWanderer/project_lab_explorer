@@ -54,13 +54,17 @@ class Player {
          * @since 1.0.0
          * @param {Number} x x position of clicked field
          * @param {Number} z z position of clicked field
-         * @param {Number} info information about field that player is standing on
+         * @param {Object} info information about field that player is standing on
+         * @param {Object} clickedinfo information about clicked field
          */
         this.checkForMove = (x, z, info = {
             doorE: null,
             doorW: null,
             doorN: null,
             doorS: null,
+        },
+        clickedinfo = {
+            type: null,
         }) => {
             let block = true;
 
@@ -107,6 +111,32 @@ class Player {
             }
 
             let distance = Math.sqrt(Math.pow((x - this.x), 2) + Math.pow((z - this.z), 2)); // distance from player to clicked tile
+            if (clickedinfo.content) {
+                if (clickedinfo.content.type == 'enemy') {
+                    if (distance == 1) {
+                        if (this.hp == 1) {
+                            this.stopAnimation();
+                            this.playAnimation('Armature|Armature|Armature|Death|Armature|Death');
+                            setTimeout(() => {
+                                this.stopAnimation();
+                                this.container.remove(this.model);
+                            }, 2200);
+                            block = true;
+                            this.hp--;
+                        } else {
+                            this.stopAnimation();
+                            this.playAnimation('Armature|Armature|Armature|Punch|Armature|Punch');
+                            setTimeout(() => {
+                                this.stopAnimation();
+                                this.playAnimation('Armature|Armature|Armature|Idle|Armature|Idle');
+                            }, 1000);
+                            block = true;
+                            this.hp--;
+                        }
+                    }
+                }
+            }
+
             if (distance == 1 && !this.setxPosFlag && !this.setzPosFlag && !block) {
                 // setting destination coordinates
                 this.dx = x;

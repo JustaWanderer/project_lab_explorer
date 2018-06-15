@@ -250,12 +250,19 @@ $(document).ready(() => {
                             $(document).mousedown((event) => {
                                 mouseVector.x = (event.clientX / $(window).width()) * 2 - 1;
                                 mouseVector.y = -(event.clientY / $(window).height()) * 2 + 1;
-fg
+
                                 raycaster.setFromCamera(mouseVector, camera);
                                 let intersects = raycaster.intersectObjects(generator.container.children);
                                 if (intersects.length > 0 && intersects[0].object.name.startsWith('tile')) {
                                     let x = intersects[0].object.position.x;
                                     let z = intersects[0].object.position.z;
+                                    let clickedinfo;
+                                    for (let i = 0; i < json.board.length; i++) {
+                                        if (json.board[i].x == x / Settings.tileWidth && json.board[i].z == z / Settings.tileWidth) {
+                                            clickedinfo = json.board[i];
+                                        }
+                                    }
+
                                     let info;
                                     if (yourPlayer == 1) {
                                         for (let i = 0; i < json.board.length; i++) {
@@ -263,7 +270,17 @@ fg
                                                 info = json.board[i];
                                             }
                                         }
-                                        player1.checkForMove(x / Settings.tileWidth, z / Settings.tileWidth, info);
+                                        player1.checkForMove(x / Settings.tileWidth, z / Settings.tileWidth, info, clickedinfo);
+                                        if (player1.hp == 0) {
+                                            uiObj.loss();
+                                            h.ajax('/setPos', 'POST', {
+                                                player: 1,
+                                                playerData: {
+                                                    type: 'loss',
+                                                },
+                                            });
+                                        }
+
                                         h.ajax('/setPos', 'POST', {
                                             player: 1,
                                             playerData: {
@@ -277,7 +294,17 @@ fg
                                                 info = json.board[i];
                                             }
                                         }
-                                        player2.checkForMove(x / Settings.tileWidth, z / Settings.tileWidth, info);
+                                        player2.checkForMove(x / Settings.tileWidth, z / Settings.tileWidth, info, clickedinfo);
+                                        if (player2.hp == 0) {
+                                            uiObj.loss();
+                                            h.ajax('/setPos', 'POST', {
+                                                player: 2,
+                                                playerData: {
+                                                    type: 'loss',
+                                                },
+                                            });
+                                        }
+
                                         h.ajax('/setPos', 'POST', {
                                             player: 2,
                                             playerData: {
@@ -329,7 +356,6 @@ fg
                                 };
                                 h.ajax('/checkMoves', 'GET', body)
                                     .then((data) => {
-                                        console.log(data);
                                         if (data.dx && data.dz) {
                                             if (yourPlayer == 1) {
                                                 if (data.dx != player2.dx || data.dy != player2.dz) {
@@ -340,6 +366,8 @@ fg
                                                     player1.checkForMove(data.dx, data.dz);
                                                 }
                                             }
+                                        } else if (data.type == 'loss') {
+                                            uiObj.loss();
                                         }
                                     }, console.log);
                             }, 500);
