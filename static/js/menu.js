@@ -6,6 +6,10 @@ $(document).ready(() => {
         }).then(console.log, console.error);
     });
 
+    $('#reset').on('click', () => {
+        h.ajax('/reset');
+    });
+
     h.ajax('/getLevels').then((data) => {
         data.forEach((level) => {
             let d = $('<div>')

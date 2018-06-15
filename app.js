@@ -79,6 +79,19 @@ app.get('/listen', (req, res) => {
     }
 });
 
+app.get('/reset', (req, res) => {
+    userNum = 0;
+    player1 = {
+        dx: undefined,
+        dz: undefined,
+    };
+    player2 = {
+        dx: undefined,
+        dz: undefined,
+    };
+    res.send('ok');
+});
+
 app.listen(3000, () => {
     console.log('App listening on port 3000!');
 });

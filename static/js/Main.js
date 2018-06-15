@@ -60,7 +60,19 @@ const loadWallTextures = () => new Promise((resolve, reject) => {
                                                                                                 .then((texture) => {
                                                                                                     Settings.oneWayForceMap = texture;
                                                                                                 }, console.error)
-                                                                                                .then(resolve);
+                                                                                                .then(() => {
+                                                                                                    loader.loadTexture('./resources/textures/pressure-plate.png')
+                                                                                                        .then((texture) => {
+                                                                                                            Settings.pressurePlateMap = texture;
+                                                                                                        }, console.error)
+                                                                                                        .then(() => {
+                                                                                                            loader.loadTexture('./resources/textures/pressure-plate-bump.png')
+                                                                                                                .then((texture) => {
+                                                                                                                    Settings.pressurePlateBumpMap = texture;
+                                                                                                                }, console.error)
+                                                                                                                .then(resolve);
+                                                                                                        });
+                                                                                                });
                                                                                         });
                                                                                 });
                                                                         });
@@ -352,21 +364,48 @@ $(document).ready(() => {
                                 };
                                 h.ajax('/checkMoves', 'GET', body)
                                     .then((data) => {
+                                        let info;
                                         if (data.type == 'loss') {
                                             uiObj.loss();
                                         } else if (data.dx && data.dz) {
+                                            for (let i = 0; i < json.board.length; i++) {
+                                                if (json.board[i].x == data.dx && json.board[i].z == data.dz) {
+                                                    info = json.board[i];
+                                                }
+                                            }
                                             if (yourPlayer == 1) {
                                                 if (data.dx != player2.dx || data.dy != player2.dz) {
-                                                    player2.checkForMove(data.dx, data.dz);
+                                                    player2.checkForMove(data.dx, data.dz, info);
                                                 }
                                             } else {
                                                 if (data.dx != player1.dx || data.dy != player1.dz) {
-                                                    player1.checkForMove(data.dx, data.dz);
+                                                    player1.checkForMove(data.dx, data.dz, info);
                                                 }
                                             }
                                         }
                                     }, console.log);
                             }, 500);
+
+                            $(document).on('actiontrigger', (e) => {
+                                console.log('actiontrigger');
+                                json.board.forEach((field) => {
+                                    if (field.doorN.code && field.doorN.code == 2 && field.doorN.id == e.id) {
+                                        field.doorN.code = 1;
+                                    }
+                                    if (field.doorS.code && field.doorS.code == 2 && field.doorS.id == e.id) {
+                                        field.doorS.code = 1;
+                                    }
+                                    if (field.doorE.code && field.doorE.code == 2 && field.doorE.id == e.id) {
+                                        field.doorE.code = 1;
+                                    }
+                                    if (field.doorE.code && field.doorE.code == 2 && field.doorE.id == e.id) {
+                                        field.doorE.code = 1;
+                                    }
+                                });
+                                scene.remove(generator.container);
+                                generator.generateLevel(json);
+                                scene.add(generator.container);
+                            });
 
                             /**
                              * Main rendering loop
