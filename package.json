@@ -1,5 +1,5 @@
 {
-  "name": "projekt_do_stefana",
+  "name": "project_lab_explorer",
   "version": "1.0.0",
   "description": "Projekt końcoworoczny z Aplikacji Serwerowych",
   "main": "app.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TheCoprobo/projekt_do_stefana.git"
+    "url": "git+https://github.com/TheCoprobo/project_lab_explorer.git"
   },
   "author": "Karol Wilk i Jakub Latała",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/TheCoprobo/projekt_do_stefana/issues"
+    "url": "https://github.com/TheCoprobo/project_lab_explorer/issues"
   },
-  "homepage": "https://github.com/TheCoprobo/projekt_do_stefana#readme",
+  "homepage": "https://github.com/TheCoprobo/project_lab_explorer#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "eslint": "^4.19.1",
