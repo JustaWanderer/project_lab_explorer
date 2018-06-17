@@ -1,4 +1,4 @@
-SETUP:
+﻿SETUP:
 1. cmd > node app.js
 2. W przeglądarce: <hostname>:3000/
     (<hostname> - localhost / adres IP)
@@ -6,7 +6,7 @@ SETUP:
     >EDYTOR - można edytowac pola i sciany. Uwagi:
         * pola: treasure, button, lever, pressure-plate nie są jeszcze zaimplementowane.
         * ściany MUSZĄ byc dwustronne.
-        * one-way-in MUSI toważyszyc on-way-out.
+        * one-way-in MUSI toważyszyc one-way-out.
         * level MUSI zawierac dokładnie JEDNO pole typu: p1-start, p2-start, p1-finish, p2-finish.
         * maksymalna ilośc pól typu enemy to 8.
 4. Można zapisac poziom z autoryzacją po dodaniu usera.

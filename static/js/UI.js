@@ -47,6 +47,10 @@ class UI {
         this.loss = () => {
             $('#loss').css('display', 'block');
         };
+		
+		this.win = () => {
+            $('#win').css('display', 'block');
+        };
 
         this.update();
 

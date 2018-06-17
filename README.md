@@ -1,3 +1,3 @@
-# projekt_do_stefana
+# projekt
 
 ## GOTO README.txt

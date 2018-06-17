@@ -375,11 +375,11 @@ $(document).ready(() => {
                                             }
                                             if (yourPlayer == 1) {
                                                 if (data.dx != player2.dx || data.dy != player2.dz) {
-                                                    player2.checkForMove(data.dx, data.dz, info);
+                                                    player2.checkForMove(data.dx, data.dz);
                                                 }
                                             } else {
                                                 if (data.dx != player1.dx || data.dy != player1.dz) {
-                                                    player1.checkForMove(data.dx, data.dz, info);
+                                                    player1.checkForMove(data.dx, data.dz);
                                                 }
                                             }
                                         }
@@ -431,6 +431,12 @@ $(document).ready(() => {
                                     player1.playerMove();
                                     player2.playerMove(orbitControl);
                                 }
+								
+								if (player1.x == generator.player1finish.x && player1.z == generator.player1finish.z
+                                 && player2.x == generator.player2finish.x && player2.z == generator.player2finish.z) {
+                                     uiObj.win();
+                                 }
+								
                                 requestAnimationFrame(render);
                                 renderer.render(scene, camera);
                             }
